@@ -1,12 +1,11 @@
-# Symphony Matlab Ala-Laurila Lab
+# Calibration Module Ala-Laurila Lab
 
-Symphony data acquisition Matlab interface customized for Ala-Laurila Lab
+Calibration module to persist and retrive following
 
-## Clone
-
-`git clone https://github.com/Symphony-DAS/symphony-matlab2.git --recursive`
-
-**Note:** You must use the `--recursive` option to recursively clone all submodules.
+- Spectrum
+- NDF transmitance
+- Intensity measurement
+- Linearity correction
 
 ## Requirements
 
