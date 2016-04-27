@@ -43,11 +43,8 @@ classdef NDF < H5Entity
                 'referencePower', obj.referencePowers);
         end
         
-        function setQueryResponse(obj, rdata, n)
-            obj.voltages = ones(1,n);
-            obj.powers = ones(1, n);
-            obj.referencePowers = ones(1, n);
-            
+        function setQueryResponse(obj, rdata, ~)
+
             obj.voltages = rdata.voltage(:);
             obj.powers = rdata.power(:);
             obj.referencePowers = rdata.referencePower(:);
@@ -60,23 +57,28 @@ classdef NDF < H5Entity
             obj.name = name;
         end
         
-        function insertTable(obj, fname, path)
-            
-            if nargin < 3
+        function insert(obj, path)
+            if nargin < 2
                 path = date;
             end
             
             path = strcat(obj.NDF_GROUP, path);
-            insertTable@H5Entity(obj, fname, path);
+            obj.insertTable(path);
         end
         
-        function selectTable(obj, fname, date)
+        function obj = select(obj, date)
             
-            if nargin < 3
-                date = obj.lastEntry(fname, obj.NDF_GROUP);
+            if nargin < 2
+                date = obj.lastEntry(obj.NDF_GROUP);
             end
             path = [obj.NDF_GROUP, datestr(date), '/', obj.identifier];
-            selectTable@H5Entity(obj, fname, path);
+            obj.selectTable(path);
+        end
+        
+        function [power, reference] = groupByVoltage(obj, value)
+            index = (obj.voltages == value);
+            power = obj.powers(index);
+            reference = obj.referencePowers(index); 
         end
       
         function id = get.identifier(obj)
