@@ -2,37 +2,18 @@ classdef H5Entity < handle
     
     properties(Abstract)
         identifier
+        group
     end
     
-    properties
-        entityManager;
+    properties(SetAccess = private)
+        query
     end
     
     methods
         
-        function insertTable(obj, path)
-            em  = obj.entityManager;
+        function date = lastEntry(~, fname, root)
             
-            if ~ exist(em.fname, 'file')
-                em.createFile(fname)
-            end
-            
-            file = H5F.open(em.fname, 'H5F_ACC_RDWR','H5P_DEFAULT');
-            memtype = obj.createSchema();
-            data = obj.getPersistanceData();
-            size = obj.getTableSize(data);
-            space = H5S.create_simple(1, fliplr(size), []);
-            group = H5G.create(file, path, 0);
-            dset = H5D.create(group, obj.identifier, memtype, space, 'H5P_DEFAULT');
-            
-            H5D.write(dset, memtype, 'H5S_ALL', 'H5S_ALL', 'H5P_DEFAULT', data);
-            H5G.close(group);
-            H5F.close(file);
-        end
-        
-        function date = lastEntry(obj, root)
-            
-            info = h5info(obj.entityManager.fname, root);
+            info = h5info(fname, root);
             n = numel(info.Groups);
             dateSet = cell(n, 1);
             for i = 1:n
@@ -43,30 +24,21 @@ classdef H5Entity < handle
             date = datestr(sortedDateSet(1));
         end
         
-        function selectTable(obj, path)
-            
-            file = H5F.open(obj.entityManager.fname, 'H5F_ACC_RDONLY', 'H5P_DEFAULT');
-            dset = H5D.open(file, path);
-            space = H5D.get_space(dset);
-            memtype = obj.createSchema();
-            [~, dims, ~] = H5S.get_simple_extent_dims(space);
-            dims = fliplr(dims);
-            
-            rdata = H5D.read(dset, memtype, 'H5S_ALL', 'H5S_ALL', 'H5P_DEFAULT');
-            obj.setQueryResponse(rdata, dims);
-            
-            H5D.close(dset);
-            H5S.close(space);
-            H5T.close(memtype);
-            H5F.close(file);
+        function prepareInsertStatement(obj, recordedDate)
+            if nargin < 2
+                recordedDate = date;
+            end
+            obj.query = @(fname)strcat(obj.group.toPath(), datestr(recordedDate));
         end
         
-        function setEntityManager(obj, em)
-            obj.entityManager = em;
+        function prepareSelectStatement(obj, recordedDate)
+            if nargin < 2
+                lastDate = @(fname) obj.lastEntry(fname, obj.group.toPath());
+                obj.query = @(fname)strcat(obj.group.toPath(), datestr(lastDate(fname)), '/', obj.identifier);
+            else
+                obj.query = @(fname)strcat(obj.group.toPath(), datestr(recordedDate()), '/', obj.identifier);
+            end
         end
-    end
-    
-    methods(Access = private)
         
         function n = getTableSize(~, data)
             names = fieldnames(data);
@@ -74,7 +46,7 @@ classdef H5Entity < handle
         end
     end
     
-    methods(Access = protected, Abstract)
+    methods(Abstract)
         createSchema(obj)
         getPersistanceData(obj);
         setQueryResponse(obj, rdata, n)

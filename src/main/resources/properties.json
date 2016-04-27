@@ -1,0 +1,22 @@
+{
+	"calibration_location": [
+		{
+			"rig": "A",
+			"description": "Patch Rig viikki",
+			"local_path": "D:/symphony-repo/calibration-module/src/test/resources/test.h5",
+			"remotepath": ""
+		},
+		{
+			"rig": "B",
+			"description": "Suction Rig viikki",
+			"local_path": "",
+			"remotepath": ""
+		},
+		{
+			"rig": "C",
+			"description": "Patch Rig Aalto",
+			"local_path": "",
+			"remotepath": ""
+		}
+	]
+}

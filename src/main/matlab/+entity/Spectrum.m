@@ -1,7 +1,5 @@
 classdef Spectrum < H5Entity
-    %SPECTRUM Summary of this class goes here
-    %   Detailed explanation goes here
-    
+
     properties
         wavelength
         powerSpectrum
@@ -10,14 +8,18 @@ classdef Spectrum < H5Entity
     
     properties(Dependent)
         identifier % overridden properties => ledType
+        group      % overridden properties => Schema.SPECTRUM
     end
     
     properties(Constant)
         KEY_STRING_PREFIX = 'power_for_'
-        SPECTRUM_GROUP = '/spectrum/'
     end
     
-    methods(Access = protected)
+    methods
+        
+        function obj = Spectrum(ledType)
+            obj.ledType = ledType;
+        end
         
         function memtype = createSchema(obj)
             voltages = fieldnames(obj.powerSpectrum);
@@ -53,39 +55,18 @@ classdef Spectrum < H5Entity
             rdata = rmfield(rdata, 'wavelength');
             obj.powerSpectrum = rdata;
         end
-    end
-    
-    methods
         
-        function obj = Spectrum(ledType)
-            obj.ledType = ledType;
+        function addPowerSpectrum(obj, voltage, data)
+            field = strcat(obj.KEY_STRING_PREFIX, num2str(voltage), 'V');
+            obj.powerSpectrum.(field) = data;
         end
         
         function id = get.identifier(obj)
             id = obj.ledType;
         end
         
-        function insert(obj, path)
-            if nargin < 2
-                path = date;
-            end
-            
-            path = strcat(obj.SPECTRUM_GROUP, path);
-            obj.insertTable(path);
-        end
-        
-        function obj = select(obj, date)
-            
-            if nargin < 2
-                date = obj.lastEntry(obj.SPECTRUM_GROUP);
-            end
-            path = [obj.SPECTRUM_GROUP, date, '/', obj.identifier];
-            obj.selectTable(path);
-        end
-        
-        function addPowerSpectrum(obj, voltage, data)
-            field = strcat(obj.KEY_STRING_PREFIX, num2str(voltage), 'V');
-            obj.powerSpectrum.(field) = data;
+        function group = get.group(~)
+            group = EntityDescription.SPECTRUM;
         end
     end
     

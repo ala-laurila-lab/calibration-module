@@ -9,13 +9,14 @@ classdef NDF < H5Entity
     
     properties(Dependent)
         identifier % overridden properties => ndf
+        group      % overridden properties => Schema.NDF
     end
     
-    properties(Constant)
-        NDF_GROUP = '/ndf/';
-    end
-    
-    methods(Access = protected)
+    methods
+        
+        function obj = NDF(name)
+            obj.name = name;
+        end
         
         function memtype = createSchema(~)
             
@@ -44,45 +45,24 @@ classdef NDF < H5Entity
         end
         
         function setQueryResponse(obj, rdata, ~)
-
+            
             obj.voltages = rdata.voltage(:);
             obj.powers = rdata.power(:);
             obj.referencePowers = rdata.referencePower(:);
-        end
-    end
-    
-    methods
-        
-        function obj = NDF(name)
-            obj.name = name;
-        end
-        
-        function insert(obj, path)
-            if nargin < 2
-                path = date;
-            end
-            
-            path = strcat(obj.NDF_GROUP, path);
-            obj.insertTable(path);
-        end
-        
-        function obj = select(obj, date)
-            
-            if nargin < 2
-                date = obj.lastEntry(obj.NDF_GROUP);
-            end
-            path = [obj.NDF_GROUP, datestr(date), '/', obj.identifier];
-            obj.selectTable(path);
         end
         
         function [power, reference] = groupByVoltage(obj, value)
             index = (obj.voltages == value);
             power = obj.powers(index);
-            reference = obj.referencePowers(index); 
+            reference = obj.referencePowers(index);
         end
-      
+        
         function id = get.identifier(obj)
             id  = obj.name;
+        end
+        
+        function group = get.group(~)
+            group = EntityDescription.NDF;
         end
     end
 end
