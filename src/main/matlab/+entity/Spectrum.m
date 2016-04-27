@@ -8,7 +8,7 @@ classdef Spectrum < H5Entity
     
     properties(Dependent)
         identifier % overridden properties => ledType
-        group      % overridden properties => Schema.SPECTRUM
+        group      % overridden properties => EntityDescription.SPECTRUM
     end
     
     properties(Constant)

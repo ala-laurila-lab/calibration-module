@@ -9,7 +9,7 @@ classdef Intensity < H5Entity
     
     properties(Dependent)
         identifier % overridden properties => ledType
-        group      % overridden properties => Schema.INTENSITY
+        group      % overridden properties => EntityDescription.INTENSITY
     end
     
     methods
@@ -18,7 +18,7 @@ classdef Intensity < H5Entity
             obj.ledType = ledType;
         end
         
-        function memtype = createSchema(obj)
+        function memtype = createSchema(~)
             
             doubleType = H5T.copy('H5T_NATIVE_DOUBLE');
             sz(1)= H5T.get_size(doubleType);

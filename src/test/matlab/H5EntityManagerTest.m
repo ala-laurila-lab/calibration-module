@@ -35,14 +35,32 @@ classdef H5EntityManagerTest < matlab.unittest.TestCase
             obj.verifyEqual(ndf.referencePowers, rp);
             
             ndf = entity.NDF('A1B');
-            ndf.prepareSelectStatement(date); 
+            ndf.prepareSelectStatement(date);
             em.find(ndf);
             obj.verifyEqual(ndf.voltages, int32(v));
             obj.verifyEqual(ndf.powers, p);
             obj.verifyEqual(ndf.referencePowers, rp);
         end
         
+        function testWriteAndReadAttributes(obj)
+            em = EntityManagerFactory(obj.RIG).create();
+            linearity = entity.Linearity('blue');
+            linearity.power = 1.761E-6;
+            linearity.voltage = 1000E-3;
+            linearity.xRadius = 576;
+            linearity.yRadius = 590;
+            linearity.prepareInsertStatement();
+            em.addAttributes(linearity);
+            
+            readLinearity = entity.Linearity('blue');
+            readLinearity.prepareSelectStatement();
+            em.readAttributes(readLinearity)
+            
+            obj.verifyEqual(linearity.power, readLinearity.power);
+            obj.verifyEqual(linearity.voltage, readLinearity.voltage);
+            obj.verifyEqual(linearity.xRadius, readLinearity.xRadius);
+            obj.verifyEqual(linearity.yRadius, readLinearity.yRadius);
+        end
     end
-    
 end
 

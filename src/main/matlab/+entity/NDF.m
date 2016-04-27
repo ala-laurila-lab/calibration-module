@@ -9,7 +9,7 @@ classdef NDF < H5Entity
     
     properties(Dependent)
         identifier % overridden properties => ndf
-        group      % overridden properties => Schema.NDF
+        group      % overridden properties => EntityDescription.NDF
     end
     
     methods
