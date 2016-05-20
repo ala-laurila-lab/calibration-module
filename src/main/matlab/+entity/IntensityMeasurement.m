@@ -12,11 +12,11 @@ classdef IntensityMeasurement < entity.Measurement
         diameterExponent
         spotFocus
         spotFocusExponent
-        Note
+        note
         % Table
         voltages
         voltageExponent
-        power
+        powers
         powerExponent
     end
     

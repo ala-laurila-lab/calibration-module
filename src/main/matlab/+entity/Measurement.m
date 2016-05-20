@@ -20,7 +20,7 @@ classdef (Abstract) Measurement < io.mpa.H5Entity
         end
         
         function group = get.group(obj)
-            group = [obj.entityId obj.calibrationDate];
+            group = [obj.entityId.toPath() obj.calibrationDate];
         end
         
         function queryHandle = getAllCalibrationDate(obj)
