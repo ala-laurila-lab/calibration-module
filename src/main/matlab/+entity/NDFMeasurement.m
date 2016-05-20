@@ -1,4 +1,4 @@
-classdef NDFMeasurement < io.mpa.H5Entity
+classdef NDFMeasurement < entity.Measurement
     
     properties
         % group
@@ -15,20 +15,11 @@ classdef NDFMeasurement < io.mpa.H5Entity
         referencePowerExponent
     end
     
-    properties
-        group
-        entityId = CalibrationPersistence.NDF_MEASUREMENT
-    end
-    
     methods
         
-        function obj = NDF(name)
+        function obj = NDFMeasurement(name)
+            obj = obj@entity.Measurement(ledType, CalibrationPersistence.NDF_MEASUREMENT);
             obj.ndfName = name;
-            obj.identifier = name;
-        end
-        
-        function group = get.group(obj)
-            group = [obj.entityId obj.calibrationDate];
         end
     end
 end

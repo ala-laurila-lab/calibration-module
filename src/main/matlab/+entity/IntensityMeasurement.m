@@ -1,4 +1,4 @@
-classdef IntensityMeasurement < io.mpa.H5Entity
+classdef IntensityMeasurement < entity.Measurement
     
     properties
         % Attributes
@@ -20,20 +20,11 @@ classdef IntensityMeasurement < io.mpa.H5Entity
         powerExponent
     end
     
-    properties
-        group
-        entityId = CalibrationPersistence.INTENSITY_MEASUREMENT
-    end
-    
     methods
         
-        function obj = Intensity(ledType)
+        function obj = IntensityMeasurement(ledType)
+            obj = obj@entity.Measurement(ledType, CalibrationPersistence.INTENSITY_MEASUREMENT);
             obj.ledType = ledType;
-            obj.identifier = ledType;
-        end
-        
-        function group = get.group(obj)
-            group = [obj.entityId obj.calibrationDate];
         end
     end
 end

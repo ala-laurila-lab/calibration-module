@@ -1,9 +1,8 @@
-classdef LinearityMeasurement <  io.mpa.H5Entity
+classdef LinearityMeasurement <  entity.Measurement
     
     properties
-        % group path
+        % attributes
         calibrationDate
-        % identifier
         stimulsType
         ledType
         % table
@@ -13,21 +12,13 @@ classdef LinearityMeasurement <  io.mpa.H5Entity
         cstds
     end
     
-    properties
-        group
-        entityId = CalibrationPersistence.LINEARITY_MEASUREMENT
-    end
-    
     methods
         
-        function obj = Linearity(ledType, stimulsType)
+        function obj = LinearityMeasurement(ledType, stimulsType)
+            id = [ledType '-' stimulsType];
+            obj = obj@entity.Measurement(id, CalibrationPersistence.LINEARITY_MEASUREMENT);
             obj.ledType = ledType;
             obj.stimulsType = stimulsType;
-            obj.identifier = [ledType '-' stimulsType];
-        end
-        
-        function group = get.group(obj)
-            group = [obj.entityId obj.calibrationDate];
         end
     end
 end

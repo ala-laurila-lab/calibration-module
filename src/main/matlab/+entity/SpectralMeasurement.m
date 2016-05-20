@@ -1,4 +1,4 @@
-classdef SpectralMeasurement < io.mpa.H5Entity
+classdef SpectralMeasurement < entity.DynamicMeasurement
     
     properties
         calibrationDate
@@ -7,28 +7,20 @@ classdef SpectralMeasurement < io.mpa.H5Entity
         powerSpectrum
     end
     
-    properties
-        group
-        entityId = CalibrationPersistence.SPECTRAL_MEASUREMENT
-    end
-    
     properties(Constant)
         KEY_STRING_PREFIX = 'power_for_'
     end
     
+    properties
+        prefix
+        extendedStruct
+    end
+    
     methods
         
-        function obj = Spectrum(ledType)
+        function obj = SpectralMeasurement(ledType)
+            obj = obj@entity.DynamicMeasurement(ledType, CalibrationPersistence.SPECTRAL_MEASUREMENT);
             obj.ledType = ledType;
-            obj.identifier = ledType;
-        end
-        
-        function setQueryResponse(obj, rdata, ~)
-            obj.wavelength = rdata.wavelength(:);
-            obj.calibrationDate = rdata.calibrationDate;
-            obj.ledType = rdata.ledType;
-            rdata = rmfield(rdata, {'wavelength', 'calibrationDate', 'ledType'});
-            obj.powerSpectrum = rdata;
         end
         
         function addPowerSpectrum(obj, voltage, data)
@@ -36,19 +28,12 @@ classdef SpectralMeasurement < io.mpa.H5Entity
             obj.powerSpectrum.(field) = data;
         end
         
-        function group = get.group(obj)
-            group = [obj.entityId obj.calibrationDate];
+        function prefix = get.prefix(obj)
+            prefix = obj.KEY_STRING_PREFIX;
         end
         
-        function schema = getFinalSchema(obj)
-             schema = obj.entityId.schema;
-             dataType = schema.(obj.KEY_STRING_PREFIX);
-             schema = rmfield(schema, obj.KEY_STRING_PREFIX);
-             
-             fields = fieldnames(obj.powerSpectrum);
-             for i = 1 : numel(fields)
-                 schema.(fields{i}) = dataType;
-             end
+        function extendedStruct = get.extendedStruct(obj)
+            extendedStruct = obj.powerSpectrum;
         end
     end
 end

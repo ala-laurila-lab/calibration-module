@@ -1,7 +1,7 @@
 classdef CalibrationService < handle
     
     properties
-        entityManager;
+        entityManager
     end
     
     methods
@@ -12,12 +12,21 @@ classdef CalibrationService < handle
         end
         
         function addIntensityMeasurement(entity)
-            em.persist(entity);
+            obj.entityManager.persist(entity);
         end
         
-        function getIntensityMeasurement()
+        function intensityMeasure = getIntensityMeasurement(obj, led, date)
+            intensityMeasure = entity.IntensityMeasurement(led);
+            em  = obj.entityManager;
+            
+            if nargin < 2
+                query = intensityMeasure.getAllCalibrationDate();
+                dates = em.executeQuery(query);
+                date = dates{1};
+            end
+            intensityMeasure.calibrationDate = date;
+            em.find(intensityMeasure);
         end
     end
-    
 end
 
