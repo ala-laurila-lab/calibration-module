@@ -1,5 +1,5 @@
 clc
-clear;
+clear classes;
 
 s = service.CalibrationService('A');
 
@@ -29,5 +29,23 @@ for i = 8 : numel(m)
     e.powers = [m{i}.power, str2double(m{i}.voltages1), str2double(m{i}.voltages2), str2double(m{i}.voltages3), str2double(m{i}.voltages4), str2double(m{i}.voltages5)];
     e.powerExponent = 1e-9.*ones(6, 1);
     
-    s.addIntensityMeasurement(e);
+    s.addEntity(e);
 end
+
+json = loadjson(which('linearity.json')) ;
+m = json.linearity;
+
+
+for i = 1 : numel(m)
+    e = entity.LinearityMeasurement('BlueLed', m{i}.stimulsType);
+    e.cstds =  m{i}.Cstd;
+    e.cmeans = m{i}.Cmean;
+    e.calibrationDate =  m{i}.calibrationDate;
+    e.voltages = m{i}.V;
+    e.voltageExponent = 1e-3.*ones(1, numel(m{i}.V));
+    e.info = m{i}.Info;
+    s.addEntity(e);
+end
+
+e = util.loadSpectralFile();
+s.addEntity(e);

@@ -8,7 +8,7 @@ classdef SpectralMeasurement < entity.DynamicMeasurement
     end
     
     properties(Constant)
-        KEY_STRING_PREFIX = 'power_for_'
+        KEY_STRING_PREFIX = 'power_in'
     end
     
     properties
@@ -22,9 +22,9 @@ classdef SpectralMeasurement < entity.DynamicMeasurement
             obj = obj@entity.DynamicMeasurement(ledType, CalibrationPersistence.SPECTRAL_MEASUREMENT);
             obj.ledType = ledType;
         end
-        
-        function addPowerSpectrum(obj, voltage, data)
-            field = strcat(obj.KEY_STRING_PREFIX, num2str(voltage), 'V');
+               
+        function addPowerSpectrum(obj, voltage, unit, data, dataUnit)
+            field = strcat(dataUnit, '_for_', num2str(voltage), unit);
             obj.powerSpectrum.(field) = data;
         end
         

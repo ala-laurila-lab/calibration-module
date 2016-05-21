@@ -10,6 +10,7 @@ classdef LinearityMeasurement <  entity.Measurement
         voltageExponent
         cmeans
         cstds
+        info
     end
     
     methods

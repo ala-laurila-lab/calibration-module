@@ -6,6 +6,12 @@ classdef (Abstract) DynamicMeasurement < entity.Measurement & io.mpa.DynamicEnti
             obj = obj@entity.Measurement(ledType, persistenceId);
         end
         
+        function updateFinalSchema(obj, ~ , ~)
+            json = loadjson(obj.dynamicSchema);
+            obj.finalSchema = json.schema;
+            obj.setStructureFields(obj.finalSchema)
+        end
+        
         function prePersist(obj)
             obj.setDynamicSchema(obj.entityId.schema, obj.extendedStruct);
         end
@@ -31,6 +37,5 @@ classdef (Abstract) DynamicMeasurement < entity.Measurement & io.mpa.DynamicEnti
             obj.mergeProperties(rdata);
         end
     end
-    
 end
 

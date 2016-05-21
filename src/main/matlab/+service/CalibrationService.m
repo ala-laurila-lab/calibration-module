@@ -11,7 +11,7 @@ classdef CalibrationService < handle
             obj.entityManager =  io.mpa.persistence.createEntityManager(rigName, h5Properties);
         end
         
-        function addIntensityMeasurement(obj, entity)
+        function addEntity(obj, entity)
             obj.entityManager.persist(entity);
         end
         
