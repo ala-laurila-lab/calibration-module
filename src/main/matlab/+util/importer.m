@@ -49,3 +49,29 @@ end
 
 e = util.loadSpectralFile();
 s.addEntity(e);
+
+json = loadjson(which('ndf_21-Apr-2016.json')) ;
+m = json.ndf{1};
+ndf = m{1}.ndf;
+index = 1;
+
+e = entity.NDFMeasurement(ndf);    
+e.calibrationDate = json.calibrationDate;
+for i = 1 : numel(m)
+    ndf = m{i}.ndf;
+    
+    if ~ strcmp(ndf, e.ndfName)
+        s.addEntity(e);
+        e = entity.NDFMeasurement(ndf);    
+        e.isGroupCreated = 1;
+        e.calibrationDate = json.calibrationDate;
+        index = 1;
+    end
+    e.voltages(index) =  m{i}.voltages;
+    e.voltageExponent(index) =  m{i}.voltageExponent;
+    e.powers(index) =  m{i}.powers;
+    e.powerExponent(index) =  m{i}.powerExponent;
+    e.powerWithNdf(index) =  m{i}.powerWithNdf;
+    e.powerWithNdfExponent(index) =  m{i}.powerWithNdfExponent;
+    index = index + 1;
+end

@@ -10,15 +10,14 @@ classdef NDFMeasurement < entity.Measurement
         voltageExponent
         powers
         powerExponent
-        referenceVoltages
-        referencePowers
-        referencePowerExponent
+        powerWithNdf
+        powerWithNdfExponent
     end
     
     methods
         
         function obj = NDFMeasurement(name)
-            obj = obj@entity.Measurement(ledType, CalibrationPersistence.NDF_MEASUREMENT);
+            obj = obj@entity.Measurement(name, CalibrationPersistence.NDF_MEASUREMENT);
             obj.ndfName = name;
         end
     end

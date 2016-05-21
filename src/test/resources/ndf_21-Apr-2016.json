@@ -1,0 +1,260 @@
+{
+	"ndf": [
+		[
+			{
+				"ndf": "A4B",
+				"voltages": 9,
+				"voltageExponent": 1,
+				"powers": 3.5747,
+				"powerExponent": 0.001,
+				"powerWithNdf": 90.539,
+				"powerWithNdfExponent": 1e-09
+			},
+			{
+				"ndf": "A4B",
+				"voltages": 9,
+				"voltageExponent": 1,
+				"powers": 3.5747,
+				"powerExponent": 0.001,
+				"powerWithNdf": 90.435,
+				"powerWithNdfExponent": 1e-09
+			},
+			{
+				"ndf": "A4B",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 692.28,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 17.75,
+				"powerWithNdfExponent": 1e-09
+			},
+			{
+				"ndf": "A4B",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 692.28,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 17.749,
+				"powerWithNdfExponent": 1e-09
+			},
+			{
+				"ndf": "A1A",
+				"voltages": 9,
+				"voltageExponent": 1,
+				"powers": 3.5609,
+				"powerExponent": 0.001,
+				"powerWithNdf": 533.44,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A1A",
+				"voltages": 9,
+				"voltageExponent": 1,
+				"powers": 3.5609,
+				"powerExponent": 0.001,
+				"powerWithNdf": 532.56,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A1A",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 692.74,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 102.95,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A1A",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 692.74,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 102.95,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A1.3A",
+				"voltages": 9,
+				"voltageExponent": 1,
+				"powers": 3.5625,
+				"powerExponent": 0.001,
+				"powerWithNdf": 242.23,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A1.3A",
+				"voltages": 9,
+				"voltageExponent": 1,
+				"powers": 3.5625,
+				"powerExponent": 0.001,
+				"powerWithNdf": 241.81,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A1.3A",
+				"voltages": 9,
+				"voltageExponent": 1,
+				"powers": 3.5625,
+				"powerExponent": 0.001,
+				"powerWithNdf": 242.11,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A1.3A",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 690.03,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 47.13,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A1.3A",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 690.03,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 47.124,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A1.3A",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 692.15,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 47.115,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A2A",
+				"voltages": 9,
+				"voltageExponent": 1,
+				"powers": 3.5574,
+				"powerExponent": 0.001,
+				"powerWithNdf": 23.665,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A2A",
+				"voltages": 9,
+				"voltageExponent": 1,
+				"powers": 3.5574,
+				"powerExponent": 0.001,
+				"powerWithNdf": 23.641,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A2A",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 690.95,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 4.614,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A2A",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 690.95,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 4.6155,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A2A",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 692.37,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 4.617,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A3A",
+				"voltages": 9,
+				"voltageExponent": 1,
+				"powers": 3.555,
+				"powerExponent": 0.001,
+				"powerWithNdf": 1.215,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A3A",
+				"voltages": 9,
+				"voltageExponent": 1,
+				"powers": 3.555,
+				"powerExponent": 0.001,
+				"powerWithNdf": 1.214,
+				"powerWithNdfExponent": 1e-06
+			},
+			{
+				"ndf": "A3A",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 690.29,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 239.37,
+				"powerWithNdfExponent": 1e-09
+			},
+			{
+				"ndf": "A3A",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 690.29,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 239.39,
+				"powerWithNdfExponent": 1e-09
+			},
+			{
+				"ndf": "A3A",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 690.29,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 239.67,
+				"powerWithNdfExponent": 1e-09
+			},
+			{
+				"ndf": "A4A",
+				"voltages": 9,
+				"voltageExponent": 1,
+				"powers": 3.5654,
+				"powerExponent": 0.001,
+				"powerWithNdf": 165.55,
+				"powerWithNdfExponent": 1e-09
+			},
+			{
+				"ndf": "A4A",
+				"voltages": 9,
+				"voltageExponent": 1,
+				"powers": 3.5654,
+				"powerExponent": 0.001,
+				"powerWithNdf": 165.36,
+				"powerWithNdfExponent": 1e-09
+			},
+			{
+				"ndf": "A4A",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 693.57,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 32.451,
+				"powerWithNdfExponent": 1e-09
+			},
+			{
+				"ndf": "A4A",
+				"voltages": 1,
+				"voltageExponent": 1,
+				"powers": 693.57,
+				"powerExponent": 1e-06,
+				"powerWithNdf": 32.455,
+				"powerWithNdfExponent": 1e-09
+			}
+		]
+	],
+    
+ "calibrationDate": "21-Apr-2016"
+}
