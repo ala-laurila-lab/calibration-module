@@ -26,6 +26,11 @@ classdef IntensityMeasurement < entity.Measurement
             obj = obj@entity.Measurement(ledType, CalibrationPersistence.INTENSITY_MEASUREMENT);
             obj.ledType = ledType;
         end
+        
+        function area = getLedArea(obj)
+            radius = (obj.diameterX + obj.diameterY) /2; 
+            area = pi *(radius * obj.diameterExponent) ^2;
+        end
     end
 end
 

@@ -32,7 +32,7 @@ for i = 1 : numel(d)
     
     metaInformation = col1(1: 17);
     e.wavelength = str2double(col1(18 : end - 1)) * 1e-2;
-    e.addPowerSpectrum(voltage, voltageUnit, str2double(col2(18 : end -1 )), 'W');
+    e.addPowerSpectrum(voltage, voltageUnit, str2double(col2(18 : end -1 )));
 end
 end
 

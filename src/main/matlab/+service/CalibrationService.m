@@ -11,22 +11,33 @@ classdef CalibrationService < handle
             obj.entityManager =  io.mpa.persistence.createEntityManager(rigName, h5Properties);
         end
         
-        function addEntity(obj, entity)               
+        function add(obj, entity)
             obj.entityManager.persist(entity);
         end
         
-        function intensityMeasure = getIntensityMeasurement(obj, led, date)
-            intensityMeasure = entity.IntensityMeasurement(led);
+        function e = get(obj, e)
             em  = obj.entityManager;
             
-            if nargin < 2
-                query = intensityMeasure.getAllCalibrationDate();
+            if isempty(e.calibrationDate)
+                import entity.*;
+                query = Measurement.getAllCalibrationDate(e.entityId);
                 dates = em.executeQuery(query);
-                date = dates{1};
+                e.calibrationDate = dates{1};
             end
-            intensityMeasure.calibrationDate = date;
-            em.find(intensityMeasure);
+            
+            e.calibrationDate = date;
+            em.find(e);
+        end
+        
+        function map = getCalibrationDates(obj)
+            map = containers.Map();
+            [persistence, description] = enumeration('CalibrationPersistence');
+            
+            for i = 1 : numel(persistence)
+                query = entity.Measurement.getAllCalibrationDate(persistence(i));
+                dates = obj.entityManager.executeQuery(query);
+                map(description{i}) = dates;
+            end
         end
     end
 end
-

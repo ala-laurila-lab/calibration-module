@@ -22,14 +22,16 @@ classdef (Abstract) Measurement < io.mpa.H5Entity
         function group = get.group(obj)
             group = [obj.entityId.toPath() obj.calibrationDate];
         end
+    end
+    
+    methods(Static)
         
-        function queryHandle = getAllCalibrationDate(obj)
-            queryHandle = @(name) resultSet(h5info(name, obj.entityId.toPath()));
-            start = length(obj.entityId.toPath()) + 1;
+        function queryHandle = getAllCalibrationDate(persistenceId)
+            queryHandle = @(name) resultSet(h5info(name, persistenceId.toPath()));
+            start = length(persistenceId.toPath()) + 1;
             
             function dates = resultSet(info)
                 dates = arrayfun(@(g) g.Name(start : end), info.Groups, 'UniformOutput', false);
-                obj.keySetCache = dates;
             end
         end
     end

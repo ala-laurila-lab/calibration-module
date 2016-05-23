@@ -8,7 +8,7 @@ classdef SpectralMeasurement < entity.DynamicMeasurement
     end
     
     properties(Constant)
-        KEY_STRING_PREFIX = 'power_in'
+        KEY_STRING_PREFIX = 'powerSpectrum'
     end
     
     properties
@@ -23,8 +23,8 @@ classdef SpectralMeasurement < entity.DynamicMeasurement
             obj.ledType = ledType;
         end
                
-        function addPowerSpectrum(obj, voltage, unit, data, dataUnit)
-            field = strcat(dataUnit, '_for_', num2str(voltage), unit);
+        function addPowerSpectrum(obj, voltage, unit, data)
+            field = strcat('for_', num2str(voltage), unit);
             obj.powerSpectrum.(field) = data;
         end
         
@@ -34,6 +34,19 @@ classdef SpectralMeasurement < entity.DynamicMeasurement
         
         function extendedStruct = get.extendedStruct(obj)
             extendedStruct = obj.powerSpectrum;
+        end
+        
+        function power = normalizePower(obj, voltage, unit)
+            lambda = obj.wavelength;
+            d_lambda = diff(lambda);
+            d_lambda(end + 1) = lambda(end);
+
+            field = strcat('for_', num2str(voltage), unit);
+            data = obj.powerSpectrum.(field);
+            
+            power = util.angle_correction(data, lambda);
+            power = util.extrapolate_edges(power, lambda);
+            power = data / sum(power .* d_lambda);
         end
     end
 end

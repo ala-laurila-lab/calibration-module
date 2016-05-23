@@ -20,6 +20,10 @@ classdef NDFMeasurement < entity.Measurement
             obj = obj@entity.Measurement(name, CalibrationPersistence.NDF_MEASUREMENT);
             obj.ndfName = name;
         end
+        
+        function od = getOpticalDensity(obj)
+            
+        end
     end
 end
 

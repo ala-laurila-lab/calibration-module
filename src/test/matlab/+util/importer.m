@@ -1,6 +1,3 @@
-clc
-clear classes;
-
 s = service.CalibrationService('A');
 
 json = loadjson(which('intensity.json')) ;
@@ -29,7 +26,7 @@ for i = 8 : numel(m)
     e.powers = [m{i}.power, str2double(m{i}.voltages1), str2double(m{i}.voltages2), str2double(m{i}.voltages3), str2double(m{i}.voltages4), str2double(m{i}.voltages5)];
     e.powerExponent = 1e-9.*ones(6, 1);
     
-    s.addEntity(e);
+    s.add(e);
 end
 
 json = loadjson(which('linearity.json')) ;
@@ -44,11 +41,11 @@ for i = 1 : numel(m)
     e.voltages = m{i}.V;
     e.voltageExponent = 1e-3.*ones(1, numel(m{i}.V));
     e.info = m{i}.Info;
-    s.addEntity(e);
+    s.add(e);
 end
 
 e = util.loadSpectralFile();
-s.addEntity(e);
+s.add(e);
 
 json = loadjson(which('ndf_21-Apr-2016.json')) ;
 m = json.ndf{1};
@@ -61,7 +58,7 @@ for i = 1 : numel(m)
     ndf = m{i}.ndf;
     
     if ~ strcmp(ndf, e.ndfName)
-        s.addEntity(e);
+        s.add(e);
         e = entity.NDFMeasurement(ndf);    
         e.isGroupCreated = 1;
         e.calibrationDate = json.calibrationDate;

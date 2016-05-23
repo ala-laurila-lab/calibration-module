@@ -1265,10 +1265,10 @@
 				"spotFocus": 140,
 				"Note": "at home",
 				"voltages1": "-0,031– +2",
-				"voltages2": 1.3004,
-				"voltages3": 36.658,
-				"voltages4": 75.663,
-				"voltages5": 115.16
+				"voltages2": "1.3004",
+				"voltages3": "36.658",
+				"voltages4": "75.663",
+				"voltages5": "115.16"
 			},
 			{
 				"calibrationDate": {
@@ -1319,10 +1319,10 @@
 				"spotFocus": 140,
 				"Note": "at home",
 				"voltages1": "-0,048– +0,02",
-				"voltages2": 0.953,
-				"voltages3": 40.357,
-				"voltages4": 84.214,
-				"voltages5": 128.7
+				"voltages2": "0.953",
+				"voltages3": "40.357",
+				"voltages4": "84.214",
+				"voltages5": "128.7"
 			},
 			{
 				"calibrationDate": {
@@ -1346,10 +1346,10 @@
 				"spotFocus": 140,
 				"Note": "at home",
 				"voltages1": "-0,015– +0,007",
-				"voltages2": 1.17,
-				"voltages3": 40.21,
-				"voltages4": 83.554,
-				"voltages5": 127.54
+				"voltages2": "1.17",
+				"voltages3": "40.21",
+				"voltages4": "83.554",
+				"voltages5": "127.54"
 			}
 		]
 	]
