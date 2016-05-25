@@ -5,10 +5,6 @@ classdef (Abstract) Measurement < io.mpa.H5Entity
         entityId
     end
     
-    properties(SetAccess = private)
-        keySetCache
-    end
-    
     properties(Abstract)
         calibrationDate
     end

@@ -20,6 +20,10 @@ classdef IntensityMeasurement < entity.Measurement
         powerExponent
     end
     
+    properties(SetAccess = private)
+        ledArea;
+    end
+    
     methods
         
         function obj = IntensityMeasurement(ledType)
@@ -27,9 +31,24 @@ classdef IntensityMeasurement < entity.Measurement
             obj.ledType = ledType;
         end
         
-        function area = getLedArea(obj)
+        function obj = postFind(obj)
+            obj.setLedArea();
+        end
+        
+        function setLedArea(obj)
             radius = (obj.diameterX + obj.diameterY) /2; 
-            area = pi *(radius * obj.diameterExponent) ^2;
+            obj.ledArea = pi *(radius * obj.diameterExponent) ^2;
+        end
+        
+        function power = getPowerDensity(obj, voltage)
+            
+            v = voltage / obj.voltageExponent;
+            i = find(obj.voltages, v);
+            
+            if isempty(i)
+                % throw exception
+            end
+            power = obj.powers(i) * obj.powerExponent(i);
         end
     end
 end
