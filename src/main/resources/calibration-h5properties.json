@@ -3,7 +3,7 @@
 		{
 			"id": "A",
 			"description": "description about hdf5 file",
-			"local_path": "src/test/resources/test.h5",
+			"local_path": "src/test/resources/test-calibration.h5",
 			"persistence": "CalibrationPersistence",
 			"remotepath": ""
 

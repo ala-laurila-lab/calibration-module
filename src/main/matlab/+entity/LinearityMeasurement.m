@@ -27,7 +27,7 @@ classdef LinearityMeasurement <  entity.Measurement
         end
         
         function postFind(obj)
-            obj.setCValueMap(obj);
+            obj.setCValueMap();
         end
         
         function setCValueMap(obj)
@@ -43,4 +43,3 @@ classdef LinearityMeasurement <  entity.Measurement
         end
     end
 end
-

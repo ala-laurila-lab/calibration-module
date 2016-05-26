@@ -51,4 +51,3 @@ classdef CalibrationSchema < io.mpa.Schema
             ])
     end
 end
-

@@ -52,4 +52,3 @@ classdef IntensityMeasurement < entity.Measurement
         end
     end
 end
-

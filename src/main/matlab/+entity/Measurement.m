@@ -16,7 +16,7 @@ classdef (Abstract) Measurement < io.mpa.H5Entity
         end
         
         function group = get.group(obj)
-            group = [obj.entityId.toPath() obj.calibrationDate];
+            group = [obj.entityId.toPath() datestr(obj.calibrationDate)];
         end
     end
     
@@ -28,8 +28,11 @@ classdef (Abstract) Measurement < io.mpa.H5Entity
             
             function dates = resultSet(info)
                 dates = arrayfun(@(g) g.Name(start : end), info.Groups, 'UniformOutput', false);
+                
+                if ~ isempty(dates)
+                    dates = sort(datenum(dates), 'descend');
+                end
             end
         end
     end
 end
-

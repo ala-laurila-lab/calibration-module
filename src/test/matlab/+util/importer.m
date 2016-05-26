@@ -72,3 +72,4 @@ for i = 1 : numel(m)
     e.powerWithNdfExponent(index) =  m{i}.powerWithNdfExponent;
     index = index + 1;
 end
+s.add(e);

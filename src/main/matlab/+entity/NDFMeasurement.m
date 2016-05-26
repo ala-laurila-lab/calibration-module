@@ -34,19 +34,18 @@ classdef NDFMeasurement < entity.Measurement
         function calculateOpticalDensity(obj)
             
             v = unique(obj.voltages);
-            n = numel(uniqueVoltages);
+            n = numel(v);
             obj.meanTransmitance = ones(1, n);
             obj.sdTransmitance = ones(1, n);
             
             for i = 1 : n
-                indices = find(obj.voltages, v(i));
+                indices = find(obj.voltages == v(i));
                 powerNdf = obj.powerWithNdf(indices) .* obj.powerWithNdfExponent(indices);
-                power = obj.power(indices) .* obj.powerExponent(indices);
-                obj.meanTransmitance(i) = mean(powerNdf/power);
-                obj.sdTransmitance = std(powerNdf/power);
+                power = obj.powers(indices) .* obj.powerExponent(indices);
+                obj.meanTransmitance(i) = mean(powerNdf ./ power);
+                obj.sdTransmitance = std(powerNdf ./ power);
             end
             obj.opticalDensity = -log10(mean(obj.meanTransmitance));
         end
     end
 end
-

@@ -35,4 +35,3 @@ for i = 1 : numel(d)
     e.addPowerSpectrum(voltage, voltageUnit, str2double(col2(18 : end -1 )));
 end
 end
-

@@ -50,4 +50,3 @@ classdef SpectralMeasurement < entity.DynamicMeasurement
         end
     end
 end
-

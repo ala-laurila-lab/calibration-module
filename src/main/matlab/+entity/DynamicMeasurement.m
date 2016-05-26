@@ -38,4 +38,3 @@ classdef (Abstract) DynamicMeasurement < entity.Measurement & io.mpa.DynamicEnti
         end
     end
 end
-
