@@ -19,7 +19,7 @@ classdef SpectralMeasurement < entity.DynamicMeasurement
     methods
         
         function obj = SpectralMeasurement(ledType)
-            obj = obj@entity.DynamicMeasurement(ledType, CalibrationPersistence.SPECTRAL_MEASUREMENT);
+            obj = obj@entity.DynamicMeasurement(ledType, CalibrationSchema.SPECTRAL_MEASUREMENT);
             obj.ledType = ledType;
         end
                

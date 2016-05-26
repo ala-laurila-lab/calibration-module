@@ -27,7 +27,7 @@ classdef IntensityMeasurement < entity.Measurement
     methods
         
         function obj = IntensityMeasurement(ledType)
-            obj = obj@entity.Measurement(ledType, CalibrationPersistence.INTENSITY_MEASUREMENT);
+            obj = obj@entity.Measurement(ledType, CalibrationSchema.INTENSITY_MEASUREMENT);
             obj.ledType = ledType;
         end
         

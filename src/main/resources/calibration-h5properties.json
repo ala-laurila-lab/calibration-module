@@ -1,23 +1,25 @@
 {
-	"persistence": "CalibrationPersistence",
-
 	"location": [
 		{
 			"id": "A",
 			"description": "description about hdf5 file",
 			"local_path": "src/test/resources/test.h5",
+			"persistence": "CalibrationPersistence",
 			"remotepath": ""
+
 		},
 		{
 			"id": "B",
 			"description": "description about hdf5 file",
 			"local_path": "",
+			"persistence": "CalibrationPersistence",
 			"remotepath": ""
 		},
 		{
 			"id": "C",
 			"description": "description about hdf5 file",
 			"local_path": "",
+			"persistence": "CalibrationPersistence",
 			"remotepath": ""
 		}
 	]

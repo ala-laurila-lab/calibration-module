@@ -23,7 +23,7 @@ classdef NDFMeasurement < entity.Measurement
     methods
         
         function obj = NDFMeasurement(name)
-            obj = obj@entity.Measurement(name, CalibrationPersistence.NDF_MEASUREMENT);
+            obj = obj@entity.Measurement(name, CalibrationSchema.NDF_MEASUREMENT);
             obj.ndfName = name;
         end
         

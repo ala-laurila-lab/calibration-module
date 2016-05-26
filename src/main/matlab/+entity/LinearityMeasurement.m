@@ -21,7 +21,7 @@ classdef LinearityMeasurement <  entity.Measurement
         
         function obj = LinearityMeasurement(ledType, stimulsType)
             id = [ledType '-' stimulsType];
-            obj = obj@entity.Measurement(id, CalibrationPersistence.LINEARITY_MEASUREMENT);
+            obj = obj@entity.Measurement(id, CalibrationSchema.LINEARITY_MEASUREMENT);
             obj.ledType = ledType;
             obj.stimulsType = stimulsType;
         end

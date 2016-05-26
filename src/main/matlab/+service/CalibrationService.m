@@ -13,7 +13,7 @@ classdef CalibrationService < handle
                 useCache = 1;
             end
             h5Properties = which('calibration-h5properties.json');
-            obj.entityManager =  io.mpa.persistence.createEntityManager(rigName, h5Properties);
+            obj.entityManager =  io.mpa.factory.createEntityManager(rigName, h5Properties);
             
             if useCache
                 obj.cache = containers.Map();
@@ -51,12 +51,12 @@ classdef CalibrationService < handle
         
         function map = getCalibrationDates(obj)
             map = containers.Map();
-            [persistence, description] = enumeration('CalibrationPersistence');
+            em = obj.entityManager.entityMap;
             
-            for i = 1 : numel(persistence)
-                query = entity.Measurement.getAllCalibrationDate(persistence(i));
+            for key = em.keys()
+                query = entity.Measurement.getAllCalibrationDate(em(key{:}));
                 dates = obj.entityManager.executeQuery(query);
-                map(description{i}) = dates;
+                map(key{:}) = sort(datenum(dates));
             end
         end
     end

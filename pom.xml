@@ -9,7 +9,7 @@
         <dependency>
             <groupId>com.github.ragavsathish</groupId>
             <artifactId>matlab-hdf5-persistence</artifactId>
-            <version>2f8dea9523</version>
+            <version>9cf4aff</version>
             <type>zip</type>
         </dependency>
     </dependencies>
