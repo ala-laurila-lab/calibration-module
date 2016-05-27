@@ -55,8 +55,23 @@ classdef MeasurementTest < matlab.unittest.TestCase
                 e = entity.NDFMeasurement(ndfs{i});
                 actual = obj.calibrationService.get(e);
                 obj.verifyEqual(actual.calibrationDate, expectedDate);
-                obj.verifyEqual(actual.opticalDensity, ods(i));
+                obj.verifyEqual(actual.opticalDensity, ods(i), 'RelTol', 1e-7,'diff exceeds relative tolerance');
             end
+        end
+        
+        function testTransmitanceError(obj)
+            e = entity.NDFMeasurement('dummy');
+            e.voltages = [1, 1, 9, 9];
+            e.powerWithNdf = [10, 10, 10.2, 10.2];
+            e.powers = [1, 1, 1, 1];
+            e.powerExponent = ones(1, 4);
+            e.powerWithNdfExponent = ones(1, 4);
+            obj.verifyError(@() e.calculateOpticalDensity(), 'diff:larger:transmittance');
+        end
+        
+        function testSpectrumNoise(obj)
+             e = entity.SpectralMeasurement('blue');
+            actual = obj.calibrationService.get(e);
         end
     end
 end

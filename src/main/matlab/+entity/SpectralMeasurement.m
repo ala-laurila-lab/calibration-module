@@ -4,7 +4,6 @@ classdef SpectralMeasurement < entity.DynamicMeasurement
         calibrationDate
         ledType
         wavelength
-        powerSpectrum
     end
     
     properties(Constant)
@@ -16,37 +15,52 @@ classdef SpectralMeasurement < entity.DynamicMeasurement
         extendedStruct
     end
     
+    properties(Dependent)
+        powerSpectrum
+    end
+    
     methods
         
         function obj = SpectralMeasurement(ledType)
             obj = obj@entity.DynamicMeasurement(ledType, CalibrationSchema.SPECTRAL_MEASUREMENT);
             obj.ledType = ledType;
         end
-               
+        
         function addPowerSpectrum(obj, voltage, unit, data)
             field = strcat('for_', num2str(voltage), unit);
             obj.powerSpectrum.(field) = data;
         end
         
+        function obj = set.powerSpectrum(obj, p)
+            obj.extendedStruct = p;
+        end
+        
+        function p = get.powerSpectrum(obj)
+            p = obj.extendedStruct;
+        end       
+       
         function prefix = get.prefix(obj)
             prefix = obj.KEY_STRING_PREFIX;
         end
         
-        function extendedStruct = get.extendedStruct(obj)
-            extendedStruct = obj.powerSpectrum;
+        function power = getPowerSpectrum(obj, voltage, unit, preProcess)
+            if nargin < 4
+                preProcess = 1;
+            end
+            lambda = obj.wavelength;
+            field = strcat('for_', num2str(voltage), unit);
+            power = obj.powerSpectrum.(field);
+            power = util.angle_correction(power, lambda);
+            
+            if preProcess
+                power = util.extrapolate_edges(power, lambda);
+            end
         end
         
-        function power = normalizePower(obj, voltage, unit)
-            lambda = obj.wavelength;
-            d_lambda = diff(lambda);
-            d_lambda(end + 1) = lambda(end);
-
-            field = strcat('for_', num2str(voltage), unit);
-            data = obj.powerSpectrum.(field);
-            
-            power = util.angle_correction(data, lambda);
-            power = util.extrapolate_edges(power, lambda);
-            power = data / sum(power .* d_lambda);
+        function axes = compareSpectrumNoise(obj, voltage, unit)
+            p = obj.getPowerSpectrum(voltage, unit);
+            preProcess = false;
+            pWithNoise = obj.getPowerSpectrum(voltage, unit, preProcess);
         end
     end
 end

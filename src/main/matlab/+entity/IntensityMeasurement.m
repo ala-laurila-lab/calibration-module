@@ -43,7 +43,7 @@ classdef IntensityMeasurement < entity.Measurement
         function power = getPowerDensity(obj, voltage)
             
             v = voltage / obj.voltageExponent;
-            i = find(obj.voltages, v);
+            i = find(obj.voltages == v);
             
             if isempty(i)
                 % throw exception
