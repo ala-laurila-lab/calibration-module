@@ -43,24 +43,12 @@ classdef SpectralMeasurement < entity.DynamicMeasurement
             prefix = obj.KEY_STRING_PREFIX;
         end
         
-        function power = getPowerSpectrum(obj, voltage, unit, preProcess)
-            if nargin < 4
-                preProcess = 1;
-            end
+        function [power, graph] = getPowerSpectrum(obj, voltage, unit)
             lambda = obj.wavelength;
             field = strcat('for_', num2str(voltage), unit);
             power = obj.powerSpectrum.(field);
             power = util.angle_correction(power, lambda);
-            
-            if preProcess
-                power = util.extrapolate_edges(power, lambda);
-            end
-        end
-        
-        function axes = compareSpectrumNoise(obj, voltage, unit)
-            p = obj.getPowerSpectrum(voltage, unit);
-            preProcess = false;
-            pWithNoise = obj.getPowerSpectrum(voltage, unit, preProcess);
+            [power, graph] = util.extrapolate_edges(power, lambda);
         end
     end
 end
