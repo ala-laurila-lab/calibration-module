@@ -50,7 +50,7 @@ classdef NDFMeasurement < entity.Measurement
                 diff = abs(obj.meanTransmitance(1) - obj.meanTransmitance(2));
                 if diff > 0.1
                     error('diff:larger:transmittance',...
-                        'mean transmitance seems to larger for desired and reference voltages');
+                        'mean transmittance seems to larger for desired and reference voltages');
                 end
             end
             obj.opticalDensity = mean(-log10(obj.meanTransmitance));

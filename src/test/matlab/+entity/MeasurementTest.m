@@ -32,8 +32,8 @@ classdef MeasurementTest < matlab.unittest.TestCase
             s = obj.calibrationService;
             map = s.getCalibrationDates();
             actual = map(char(CalibrationSchema.LINEARITY_MEASUREMENT));
-            obj.verifyEqual(datestr(actual), ['05-Dec-2015'; '31-Jan-2015']);
-            e = entity.LinearityMeasurement('BlueLed', 'stim20ms');
+            obj.verifyEqual(datestr(actual), '05-Dec-2015');
+            e = entity.LinearityMeasurement('BlueLed', '20-ms');
             actual = s.get(e);
             obj.verifyEqual(datestr(actual.calibrationDate), '05-Dec-2015');
         end
@@ -72,9 +72,31 @@ classdef MeasurementTest < matlab.unittest.TestCase
         function testSpectrumNoise(obj)
             e = entity.SpectralMeasurement('blue');
             actual = obj.calibrationService.get(e);
-            [ps, graph] = actual.getPowerSpectrum(1, 'V');
+            [~, graph] = actual.getPowerSpectrum(1, 'V');
             a = axes();
             graph(a);
+            [~, graph] = actual.getPowerSpectrum(9, 'V');
+            graph(a);
+        end
+        
+        function testGetLinearityByStimulsDuration(obj)
+            s = obj.calibrationService;
+            actual = s.getLinearityByStimulsDuration(20 ,datenum('05-Dec-2015'), 'BlueLed');
+            obj.verifyNotEmpty(actual.chargeMap);
+            
+            handle = @() s.getLinearityByStimulsDuration(10 ,datenum('05-Dec-2015'), 'BlueLed');
+            actual = obj.verifyWarning(handle, 'stimuli:notfound');
+            obj.verifyEqual(actual.stimulsType, '20-ms');
+            
+            handle = @() s.getLinearityByStimulsDuration(200 ,datenum('05-Dec-2015'), 'BlueLed');
+            actual =  obj.verifyWarning(handle, 'stimuli:notfound');
+            obj.verifyEqual(actual.stimulsType, '500-ms');
+            
+            handle = @() s.getLinearityByStimulsDuration(1000 ,datenum('05-Dec-2015'), 'BlueLed');
+            actual =  obj.verifyWarning(handle, 'stimuli:notfound');
+            obj.verifyEqual(actual.stimulsType, '500-ms');
+            
+            % Todo test charge map
         end
     end
 end

@@ -14,8 +14,8 @@ classdef CalibrationService < handle
             end
             h5Properties = which('calibration-h5properties.json');
             emf = io.mpa.Persistence.getEntityManagerFactory(h5Properties);
-            obj.entityManager = emf.create(rigName);     
-
+            obj.entityManager = emf.create(rigName);
+            
             if useCache
                 obj.cache = containers.Map();
             end
@@ -45,7 +45,7 @@ classdef CalibrationService < handle
             
             em.find(e);
             
-            if obj.useCache 
+            if obj.useCache
                 obj.cache(key) = e;
             end
         end
@@ -58,6 +58,46 @@ classdef CalibrationService < handle
                 query = entity.Measurement.getAllCalibrationDate(em(key{:}));
                 dates = obj.entityManager.executeQuery(query);
                 map(key{:}) = dates;
+            end
+        end
+        
+        function e = getLinearityByStimulsDuration(obj, duration, date, ledType)
+            import entity.*;
+            
+            query = LinearityMeasurement.getAvailableStimuli(date);
+            stimuli = obj.entityManager.executeQuery(query);
+            
+            for i = 1: numel(stimuli)
+                string = strsplit(stimuli{i}, '-');
+                ledTypes{i} = string{1};
+                durations(i) = str2double(string{2});
+            end
+            idx = ismember(ledTypes, ledType);
+            
+            if sum(idx) == 0
+                error(['stimuli:empty:' ledType]', 'No stimuls found for given ledType');
+            end
+            
+            durations = sort(durations);
+            issueWarning = false;
+            matchedDuration = duration;
+            
+            if ~ ismember(duration, durations)
+                issueWarning = true;
+                d = durations(durations > duration);
+                if isempty(d)
+                    matchedDuration = durations(end);
+                else
+                    matchedDuration = d(1);
+                end
+            end
+            stimulsType = [num2str(matchedDuration) '-ms'];
+            e = LinearityMeasurement(ledType, stimulsType);
+            e.calibrationDate = date;
+            e = obj.get(e);
+            
+            if issueWarning
+                warning('stimuli:notfound', 'No stimuls found for given duration');
             end
         end
     end

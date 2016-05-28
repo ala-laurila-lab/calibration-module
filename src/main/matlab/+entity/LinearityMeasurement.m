@@ -8,13 +8,13 @@ classdef LinearityMeasurement <  entity.Measurement
         % table
         voltages
         voltageExponent
-        cmeans
-        cstds
+        meanCharge
+        stdOfCharge
         info
     end
     
     properties(SetAccess = private)
-        cValueMap;
+        chargeMap;
     end
     
     methods
@@ -27,19 +27,34 @@ classdef LinearityMeasurement <  entity.Measurement
         end
         
         function postFind(obj)
-            obj.setCValueMap();
+            obj.setChargeMap();
         end
         
-        function setCValueMap(obj)
-            % To avoid non-monotonic point in C, avoid V less than 1mV
-            % this is not the best way, but shouldn't cause a big problem
+        function setChargeMap(obj)
+            % setChargeMap - set charge map with non monotonic voltage
+            %
+            %   Due to effect of ndf there will be non monotonic points in C
+            %   To avoid it, compare the difference in voltage(x) between
+            %   adjacent point. If it is lesser than 1 remove those indices
             
             [v, indices] = unique(obj.voltages);
-            cmean = obj.cmeans(indices);
-            removeIndices = find(diff(v) < 1);
-            retainIndices = setdiff(1 : length(v), removeIndices);
+            charge = obj.meanCharge(indices);
+            removeIdx = find(diff(v) < 1);
+            retainIdx = setdiff(1 : length(v), removeIdx);
+            obj.chargeMap = containers.Map(v(retainIdx), charge(retainIdx));
+        end
+    end
+    
+    methods(Static)
+        
+        function queryHandle = getAvailableStimuli(date)
+            key =  [CalibrationSchema.LINEARITY_MEASUREMENT.toPath() '/' datestr(date)];
+            queryHandle = @(name) resultSet(h5info(name, key));
             
-            obj.cValueMap = containers.Map(v(retainIndices), cmean(retainIndices));
+            function stimuli = resultSet(info)
+                stimuli = arrayfun(@(g) g.Name, info.Datasets, 'UniformOutput', false);
+                
+            end
         end
     end
 end

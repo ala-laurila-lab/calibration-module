@@ -35,8 +35,11 @@ m = json.linearity;
 
 for i = 1 : numel(m)
     e = entity.LinearityMeasurement('BlueLed', m{i}.stimulsType);
-    e.cstds =  m{i}.Cstd;
-    e.cmeans = m{i}.Cmean;
+    if (i > 1)
+         e.isGroupCreated = 1;
+    end
+    e.stdOfCharge =  m{i}.Cstd;
+    e.meanCharge = m{i}.Cmean;
     e.calibrationDate =  m{i}.calibrationDate;
     e.voltages = m{i}.V;
     e.voltageExponent = 1e-3.*ones(1, numel(m{i}.V));

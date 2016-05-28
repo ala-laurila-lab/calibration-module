@@ -46,7 +46,7 @@ p_r = polyfit(lambda_r, pow_r, 1);
 
 % extrapolation
 %   left extrapolations start from '1' to 'start of left slope'
-%   right extrapolation starts from 'end of left slope' to 'end of lambda
+%   right extrapolation starts from 'end of left slope' to 'end of lambda.
 %   replace original values with extrapolated values in power_out_log
 %   power_spectrum_out will be linear scale and noise free power spectrum
 
@@ -79,11 +79,7 @@ plotFunctionHandle = @(g) plotSpectrum(g);
         
         
         plot(graph, lambda, pow_log);
-        
         hold on;
-        disp('Please do a mouse click to procced');
-        waitforbuttonpress;
-        
         plot(graph, lambda(idx_r), pow_log(idx_r), 'r');
         pause(1);
         plot(graph, lambda(idx_l), pow_log(idx_l),'r');
@@ -91,6 +87,6 @@ plotFunctionHandle = @(g) plotSpectrum(g);
         plot(graph, lambda_out, pow_out_log);
         xlabel(graph, 'Wavelength in (nm)');
         ylabel(graph, 'power spectrum in log scale');
-        title(graph, 'Noise corrected power spectrum using extrapolation')
+        title(graph, 'Noise corrected power spectrum');
     end
 end
