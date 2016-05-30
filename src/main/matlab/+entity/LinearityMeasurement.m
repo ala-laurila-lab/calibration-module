@@ -14,7 +14,8 @@ classdef LinearityMeasurement <  entity.Measurement
     end
     
     properties(SetAccess = private)
-        chargeMap;
+        monotonicVoltages
+        charges
     end
     
     methods
@@ -41,7 +42,8 @@ classdef LinearityMeasurement <  entity.Measurement
             charge = obj.meanCharge(indices);
             removeIdx = find(diff(v) < 1);
             retainIdx = setdiff(1 : length(v), removeIdx);
-            obj.chargeMap = containers.Map(v(retainIdx), charge(retainIdx));
+            obj.monotonicVoltages = v(retainIdx);
+            obj.charges = charge(retainIdx);
         end
     end
     
@@ -51,9 +53,14 @@ classdef LinearityMeasurement <  entity.Measurement
             key =  [CalibrationSchema.LINEARITY_MEASUREMENT.toPath() '/' datestr(date)];
             queryHandle = @(name) resultSet(h5info(name, key));
             
-            function stimuli = resultSet(info)
-                stimuli = arrayfun(@(g) g.Name, info.Datasets, 'UniformOutput', false);
-                
+            function result = resultSet(info)
+                result = struct();
+                for i = 1 : numel(info.Datasets)
+                    id = info.Datasets(i).Name;
+                    string = strsplit(id, '-');
+                    result.ledTypes{i} = string{1};
+                    result.durations(i) = str2double(string{2});
+                end
             end
         end
     end

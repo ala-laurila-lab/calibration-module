@@ -46,13 +46,11 @@ classdef NDFMeasurement < entity.Measurement
                 obj.sdTransmitance = std(powerNdf ./ power);
             end
             
-            if n > 1
-                diff = abs(obj.meanTransmitance(1) - obj.meanTransmitance(2));
-                if diff > 0.1
-                    error('diff:larger:transmittance',...
-                        'mean transmittance seems to larger for desired and reference voltages');
-                end
-            end
+            err = util.error_percentage(obj.meanTransmitance);
+            if err > 3
+                error('diff:larger:transmittance',...
+                    ['mean transmittance for [' obj.ndfName '] seems to larger for desired and reference voltages with factor ' num2str(err)]);
+            end           
             obj.opticalDensity = mean(-log10(obj.meanTransmitance));
         end
     end

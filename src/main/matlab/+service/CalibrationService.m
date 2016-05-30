@@ -65,31 +65,21 @@ classdef CalibrationService < handle
             import entity.*;
             
             query = LinearityMeasurement.getAvailableStimuli(date);
-            stimuli = obj.entityManager.executeQuery(query);
-            
-            for i = 1: numel(stimuli)
-                string = strsplit(stimuli{i}, '-');
-                ledTypes{i} = string{1};
-                durations(i) = str2double(string{2});
-            end
-            idx = ismember(ledTypes, ledType);
+            result = obj.entityManager.executeQuery(query);
+           
+            idx = ismember(result.ledTypes, ledType);
             
             if sum(idx) == 0
                 error(['stimuli:empty:' ledType]', 'No stimuls found for given ledType');
             end
             
-            durations = sort(durations);
+            durations = sort(result.durations);
             issueWarning = false;
             matchedDuration = duration;
             
             if ~ ismember(duration, durations)
                 issueWarning = true;
-                d = durations(durations > duration);
-                if isempty(d)
-                    matchedDuration = durations(end);
-                else
-                    matchedDuration = d(1);
-                end
+                matchedDuration = util.get_nearest_match(durations, duration);
             end
             stimulsType = [num2str(matchedDuration) '-ms'];
             e = LinearityMeasurement(ledType, stimulsType);
@@ -97,7 +87,8 @@ classdef CalibrationService < handle
             e = obj.get(e);
             
             if issueWarning
-                warning('stimuli:notfound', 'No stimuls found for given duration');
+                warning('stimuli:notfound',...
+                    ['No stimuls found for [' num2str(duration) '] nearest match is [' num2str(matchedDuration) ']']);
             end
         end
     end
