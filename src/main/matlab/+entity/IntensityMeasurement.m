@@ -36,13 +36,14 @@ classdef IntensityMeasurement < entity.Measurement
         end
         
         function setLedArea(obj)
-            radius = (obj.diameterX + obj.diameterY) /2; 
+            diameter = (obj.diameterX + obj.diameterY) /2; 
+            radius = diameter / 2;
             obj.ledArea = pi *(radius * obj.diameterExponent) ^2;
         end
         
         function power = getPowerDensity(obj, voltage)
             
-            v = voltage / obj.voltageExponent;
+            v = voltage / obj.voltageExponent(1);
             i = find(obj.voltages == v);
             
             if isempty(i)

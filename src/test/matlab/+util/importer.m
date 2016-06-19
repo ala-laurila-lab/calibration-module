@@ -24,7 +24,7 @@ for i = 8 : numel(m)
     e.voltages = [m{i}.voltages, -10, 0, 20, 40, 60];
     e.voltageExponent = 1e-3.*ones(6, 1);
     e.powers = [m{i}.power, str2double(m{i}.voltages1), str2double(m{i}.voltages2), str2double(m{i}.voltages3), str2double(m{i}.voltages4), str2double(m{i}.voltages5)];
-    e.powerExponent = 1e-9.*ones(6, 1);
+    e.powerExponent = 1e-6.*ones(6, 1);
     
     s.add(e);
 end
