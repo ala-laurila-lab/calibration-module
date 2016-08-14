@@ -11,6 +11,7 @@
 			<id name="id" attribute-type="int"></id>
 		</attributes>
 		<basic name="calibrationDate" attribute-type="string" />
+		<basic name="calibrationKey" attribute-type="string" />
 		<basic name="calibratedBy" attribute-type="string" />
 		<basic name="calibrationType" attribute-type="string" />
 		<basic name="calibrationId" attribute-type="string" />
