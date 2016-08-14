@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence persistence_2_1.xsd">
+
+	<persistence-unit name="patch-rig-data">
+		<mapping-file>calibration-orm.xml</mapping-file>
+		<provider>mpa.h5.H5MatlabProvider</provider>
+		<class>entity.IntensityMeasurement</class>
+		<class>entity.LinearityMeasurement</class>
+		<class>entity.SpectralMeasurement</class>
+		<class>entity.NDFMeasurement</class>
+		<properties>
+			<property name="local-path"
+				value="D:\tmp\test.h5" />
+			<property name="remote-path" value="" />
+			<property name="create-mode" value="true" />
+			<property name="use-cache" value="false" />
+		</properties>
+	</persistence-unit>
+
+	<persistence-unit name="patch-rig-log">
+		<mapping-file>calibration-orm.xml</mapping-file>
+		<provider>mpa.mat.SimpleMatlabProvider</provider>
+		<class>entity.AuditLog</class>
+		<properties>
+			<property name="local-path"
+				value="D:\tmp\" />
+			<property name="remote-path" value="" />
+			<property name="create-mode" value="true" />
+			<property name="use-cache" value="false" />
+		</properties>
+	</persistence-unit>
+</persistence>

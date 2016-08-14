@@ -2,24 +2,14 @@ classdef CalibrationService < handle
     
     properties
         entityManager
-        cache
-        useCache
     end
     
     methods
         
-        function obj = CalibrationService(rigName, useCache)
-            if nargin < 2
-                useCache = 1;
-            end
-            h5Properties = which('calibration-h5properties.json');
-            emf = io.mpa.Persistence.getEntityManagerFactory(h5Properties);
-            obj.entityManager = emf.create(rigName);
+        function obj = CalibrationService(rigName)
             
-            if useCache
-                obj.cache = containers.Map();
-            end
-            obj.useCache = useCache;
+            path = which('symphony-persistence.xml');
+            obj.entityManager = mpa.factory.createEntityManager(rigName, path);
         end
         
         function add(obj, entity)
@@ -66,7 +56,7 @@ classdef CalibrationService < handle
             
             query = LinearityMeasurement.getAvailableStimuli(date);
             result = obj.entityManager.executeQuery(query);
-           
+            
             idx = ismember(result.ledTypes, ledType);
             
             if sum(idx) == 0

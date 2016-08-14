@@ -1,20 +1,16 @@
-classdef SpectralMeasurement < entity.DynamicMeasurement
+classdef SpectralMeasurement < handle
     
     properties
-        calibrationDate
         ledType
+        calibrationDate
+        note
         wavelength
+        powerFor100mv
+        powerFor1v
+        powerFor5v
+        powerFor9v
     end
-    
-    properties(Constant)
-        KEY_STRING_PREFIX = 'powerSpectrum'
-    end
-    
-    properties
-        prefix
-        extendedStruct
-    end
-    
+
     properties(Dependent)
         powerSpectrum
     end
@@ -22,31 +18,18 @@ classdef SpectralMeasurement < entity.DynamicMeasurement
     methods
         
         function obj = SpectralMeasurement(ledType)
-            obj = obj@entity.DynamicMeasurement(ledType, CalibrationSchema.SPECTRAL_MEASUREMENT);
             obj.ledType = ledType;
         end
         
         function addPowerSpectrum(obj, voltage, unit, data)
-            field = strcat('for_', num2str(voltage), unit);
-            obj.powerSpectrum.(field) = data;
-        end
-        
-        function obj = set.powerSpectrum(obj, p)
-            obj.extendedStruct = p;
-        end
-        
-        function p = get.powerSpectrum(obj)
-            p = obj.extendedStruct;
-        end       
-       
-        function prefix = get.prefix(obj)
-            prefix = obj.KEY_STRING_PREFIX;
+            field = strcat('powerFor', num2str(voltage), lower(unit));
+            obj.(field) = data;
         end
         
         function [power, graph] = getPowerSpectrum(obj, voltage, unit)
             lambda = obj.wavelength;
-            field = strcat('for_', num2str(voltage), unit);
-            power = obj.powerSpectrum.(field);
+            field = strcat('powerFor', num2str(voltage), lower(unit));
+            power = obj.(field);
             power = util.angle_correction(power, lambda);
             [power, graph] = util.extrapolate_edges(power, lambda);
         end

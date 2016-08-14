@@ -1,16 +1,17 @@
-classdef LinearityMeasurement <  entity.Measurement
+classdef LinearityMeasurement <  handle
     
     properties
         % attributes
+        protocol
         calibrationDate
-        stimulsType
+        stimulsDuration
         ledType
         % table
         voltages
         voltageExponent
         meanCharge
         stdOfCharge
-        info
+        note
     end
     
     properties(SetAccess = private)
@@ -20,15 +21,10 @@ classdef LinearityMeasurement <  entity.Measurement
     
     methods
         
-        function obj = LinearityMeasurement(ledType, stimulsType)
-            id = [ledType '-' stimulsType];
-            obj = obj@entity.Measurement(id, CalibrationSchema.LINEARITY_MEASUREMENT);
+        function obj = LinearityMeasurement(ledType, stimulsDuration)
+            obj.protocol = [ledType '-' stimulsDuration];
             obj.ledType = ledType;
-            obj.stimulsType = stimulsType;
-        end
-        
-        function postFind(obj)
-            obj.setChargeMap();
+            obj.stimulsDuration = stimulsDuration;
         end
         
         function setChargeMap(obj)
@@ -44,24 +40,6 @@ classdef LinearityMeasurement <  entity.Measurement
             retainIdx = setdiff(1 : length(v), removeIdx);
             obj.monotonicVoltages = v(retainIdx);
             obj.charges = charge(retainIdx);
-        end
-    end
-    
-    methods(Static)
-        
-        function queryHandle = getAvailableStimuli(date)
-            key =  [CalibrationSchema.LINEARITY_MEASUREMENT.toPath() '/' datestr(date)];
-            queryHandle = @(name) resultSet(h5info(name, key));
-            
-            function result = resultSet(info)
-                result = struct();
-                for i = 1 : numel(info.Datasets)
-                    id = info.Datasets(i).Name;
-                    string = strsplit(id, '-');
-                    result.ledTypes{i} = string{1};
-                    result.durations(i) = str2double(string{2});
-                end
-            end
         end
     end
 end

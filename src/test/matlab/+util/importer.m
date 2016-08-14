@@ -1,4 +1,4 @@
-s = service.CalibrationService('A');
+s = service.CalibrationService('patch-rig-data');
 
 json = loadjson(which('intensity.json')) ;
 m = json.intensity{1};
@@ -35,15 +35,12 @@ m = json.linearity;
 
 for i = 1 : numel(m)
     e = entity.LinearityMeasurement('BlueLed', m{i}.stimulsType);
-    if (i > 1)
-         e.isGroupCreated = 1;
-    end
     e.stdOfCharge =  m{i}.Cstd;
     e.meanCharge = m{i}.Cmean;
     e.calibrationDate =  m{i}.calibrationDate;
     e.voltages = m{i}.V;
     e.voltageExponent = 1e-3.*ones(1, numel(m{i}.V));
-    e.info = m{i}.Info;
+    e.note = m{i}.Info;
     s.add(e);
 end
 
@@ -63,7 +60,6 @@ for i = 1 : numel(m)
     if ~ strcmp(ndf, e.ndfName)
         s.add(e);
         e = entity.NDFMeasurement(ndf);    
-        e.isGroupCreated = 1;
         e.calibrationDate = json.calibrationDate;
         index = 1;
     end

@@ -1,4 +1,4 @@
-classdef IntensityMeasurement < entity.Measurement
+classdef IntensityMeasurement < handle
     
     properties
         % Attributes
@@ -27,16 +27,11 @@ classdef IntensityMeasurement < entity.Measurement
     methods
         
         function obj = IntensityMeasurement(ledType)
-            obj = obj@entity.Measurement(ledType, CalibrationSchema.INTENSITY_MEASUREMENT);
             obj.ledType = ledType;
         end
         
-        function obj = postFind(obj)
-            obj.setLedArea();
-        end
-        
         function setLedArea(obj)
-            diameter = (obj.diameterX + obj.diameterY) /2; 
+            diameter = (obj.diameterX + obj.diameterY) /2;
             radius = diameter / 2;
             obj.ledArea = pi *(radius * obj.diameterExponent) ^2;
         end

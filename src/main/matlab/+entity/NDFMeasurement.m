@@ -1,10 +1,10 @@
-classdef NDFMeasurement < entity.Measurement
+classdef NDFMeasurement < handle
     
     properties
-        % group
+        ndfId
         calibrationDate
-        % identifier
         ndfName
+        note
         % table
         voltages
         voltageExponent
@@ -23,12 +23,8 @@ classdef NDFMeasurement < entity.Measurement
     methods
         
         function obj = NDFMeasurement(name)
-            obj = obj@entity.Measurement(name, CalibrationSchema.NDF_MEASUREMENT);
+            obj.ndfId = name;
             obj.ndfName = name;
-        end
-        
-        function postFind(obj)
-            obj.calculateOpticalDensity();
         end
         
         function calculateOpticalDensity(obj)
@@ -49,8 +45,9 @@ classdef NDFMeasurement < entity.Measurement
             err = util.error_percentage(obj.meanTransmitance);
             if err > 3
                 error('diff:larger:transmittance',...
-                    ['mean transmittance for [' obj.ndfName '] seems to larger for desired and reference voltages with factor ' num2str(err)]);
-            end           
+                    ['mean transmittance for [' obj.ndfName ...
+                    '] seems to larger for desired and reference voltages with factor ' num2str(err)]);
+            end
             obj.opticalDensity = mean(-log10(obj.meanTransmitance));
         end
     end
