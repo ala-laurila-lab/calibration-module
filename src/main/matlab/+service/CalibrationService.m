@@ -14,51 +14,69 @@ classdef CalibrationService < handle
             obj.logManager = mpa.factory.createEntityManager(log, path);
         end
         
-        function add(obj, entity, log)
-            entity = obj.dataManager.persist(entity);
-            log.id = entity.id;
-            obj.logManager.persist(log);
-        end
-               
-        function measurement = getLastMeasurement(obj, class, key)
+        function e = getLinearityByStimulsDuration(obj, duration, ledType, calibrationDate)
             
-            log = obj.logManager.createQuery('entity.AuditLog')...
-                .where(@(e) strcmp(e.calibrationType, class) && strcmp(e.calibrationKey, key))...
-                .LastOrDefault();
-            constructor = str2func(class);
-            measurement = constructor(log.calibrationId);
-            measurement = obj.dataManager.find(measurement);
-        end
-        
-        function e = getLinearityByStimulsDuration(obj, duration, date, ledType)
-            import entity.*;
+            if nargin < 4
+                calibrationDate = [];
+            end
             
-            query = LinearityMeasurement.getAvailableStimuli(date);
-            result = obj.entityManager.executeQuery(query);
+            log = obj.getAuditLogByDate('entity.LinearityMeasurement', calibrationDate);
             
-            idx = ismember(result.ledTypes, ledType);
+            keys = entity.LinearityMeasurement.getKey(log(:).calibrationKey);
+            idx = ismember(keys.ledType, ledType);
             
             if sum(idx) == 0
                 error(['stimuli:empty:' ledType]', 'No stimuls found for given ledType');
             end
-            
-            durations = sort(result.durations);
+            durations = sort(keys.durations);
             issueWarning = false;
             matchedDuration = duration;
+            [present, index] = ismember(duration, durations);
             
-            if ~ ismember(duration, durations)
+            if ~ present
                 issueWarning = true;
-                matchedDuration = util.get_nearest_match(durations, duration);
+                [matchedDuration, index] = util.get_nearest_match(durations, duration);
             end
-            stimulsType = [num2str(matchedDuration) '-ms'];
-            e = LinearityMeasurement(ledType, stimulsType);
-            e.calibrationDate = date;
-            e = obj.get(e);
             
+            e = obj.getMeasurement('entity.LinearityMeasurement', log(index).id);
             if issueWarning
                 warning('stimuli:notfound',...
                     ['No stimuls found for [' num2str(duration) '] nearest match is [' num2str(matchedDuration) ']']);
             end
         end
+        
+        function add(obj, entity, log)
+            entity = obj.dataManager.persist(entity);
+            log.id = entity.id;
+            obj.logManager.persist(log);
+        end
+        
+        function measurement = getMeasurement(obj, entity, id)
+            measurement = entity;
+            
+            if ischar(entity)
+                constructor = str2func(entity);
+                measurement = constructor();
+            end
+            measurement.id = id;
+            measurement = obj.dataManager.find(measurement);
+        end
+        
+        function log = getAuditLogByDate(obj, class, date)
+            skipDate = isempty(date);
+            
+            log = obj.logManager.createQuery('entity.AuditLog')...
+                .where(@(e) strcmp(e.calibrationType, class) && (strcmp(e.calibrationDate, key) || skipDate))...
+                .toArray();
+        end
+        
+        function log = getLastAuditLog(obj, class, key)
+            skipKey = isempty(key);
+            
+            log = obj.logManager.createQuery('entity.AuditLog')...
+                .where(@(e) strcmp(e.calibrationType, class) && (strcmp(e.calibrationKey, key) || skipKey))...
+                .toArray();
+        end
+        
     end
 end
