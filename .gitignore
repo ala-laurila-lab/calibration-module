@@ -7,7 +7,6 @@
 # Binary
 *.mlappinstall
 *.h5
-lib/
 target/
 
 # Logs
