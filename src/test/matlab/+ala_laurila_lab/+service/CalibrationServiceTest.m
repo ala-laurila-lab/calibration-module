@@ -2,7 +2,7 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
     
     properties(Constant)
         FILE_NAME = 'test-calibration-module.h5'
-        READ_MODE = false;
+        READ_MODE = true;
     end
     
     properties
