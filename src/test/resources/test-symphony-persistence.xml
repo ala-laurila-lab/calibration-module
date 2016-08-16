@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence persistence_2_1.xsd">
 
 	<persistence-unit name="patch-rig-data">
-		<mapping-file>calibration-orm.xml</mapping-file>
+		<mapping-file>test-calibration-orm.xml</mapping-file>
 		<provider>mpa.h5.H5MatlabProvider</provider>
 		<class>ala_laurila_lab.entity.IntensityMeasurement</class>
 		<class>ala_laurila_lab.entity.LinearityMeasurement</class>
@@ -12,7 +12,7 @@
 		<class>ala_laurila_lab.entity.NDFMeasurement</class>
 		<properties>
 			<property name="local-path"
-				value="D:\tmp\test.h5" />
+				value="D:\project\repo\github\calibration-module\fixtures\test-calibration-module.h5" />
 			<property name="remote-path" value="" />
 			<property name="create-mode" value="true" />
 			<property name="use-cache" value="false" />
@@ -20,12 +20,12 @@
 	</persistence-unit>
 
 	<persistence-unit name="patch-rig-log">
-		<mapping-file>calibration-orm.xml</mapping-file>
+		<mapping-file>test-calibration-orm.xml</mapping-file>
 		<provider>mpa.mat.SimpleMatlabProvider</provider>
 		<class>ala_laurila_lab.entity.AuditLog</class>
 		<properties>
 			<property name="local-path"
-				value="D:\tmp\" />
+				value="D:\project\repo\github\calibration-module\fixtures\" />
 			<property name="remote-path" value="" />
 			<property name="create-mode" value="true" />
 			<property name="use-cache" value="false" />
