@@ -15,7 +15,7 @@ ledType = strings{1};
 date = strings{4};
 date = [date(5:end -4) '/' date(3:4) '/20' date(1:2)];
 
-e = entity.SpectralMeasurement(ledType);
+e = ala_laurila_lab.entity.SpectralMeasurement(ledType);
 e.calibrationDate = datestr(datenum(date, 'dd/mm/yyyy')); 
 
 for i = 1 : numel(d)

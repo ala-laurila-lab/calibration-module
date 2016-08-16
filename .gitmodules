@@ -1,0 +1,6 @@
+[submodule "lib/matlab-persistence"]
+	path = lib/matlab-persistence
+	url = git@github.com:ragavsathish/matlab-persistence.git
+[submodule "lib/jsonlab"]
+	path = lib/jsonlab
+	url = https://github.com/fangq/jsonlab.git

@@ -1,9 +1,6 @@
-classdef NDFMeasurement < entity.Measurement
+classdef NDFMeasurement < ala_laurila_lab.entity.Measurement
     
     properties
-        % group
-        calibrationDate
-        % identifier
         ndfName
         % table
         voltages
@@ -14,24 +11,32 @@ classdef NDFMeasurement < entity.Measurement
         powerWithNdfExponent
     end
     
-    properties(SetAccess = private)
+    properties(Access = private)
         meanTransmitance
         sdTransmitance
+    end
+    
+    properties(Dependent)
         opticalDensity
+    end
+        
+    properties(Constant)
+        ERROR_MARGIN_PERCENT = 5
     end
     
     methods
         
         function obj = NDFMeasurement(name)
-            obj = obj@entity.Measurement(name, CalibrationSchema.NDF_MEASUREMENT);
+            obj@ala_laurila_lab.entity.Measurement(name);
             obj.ndfName = name;
         end
         
-        function postFind(obj)
-            obj.calculateOpticalDensity();
-        end
-        
-        function calculateOpticalDensity(obj)
+        function t = getMeanTransmitances(obj)
+            
+            if ~ isempty(obj.meanTransmitance)
+                t = obj.meanTransmitance;
+                return
+            end
             
             v = unique(obj.voltages);
             n = numel(v);
@@ -46,12 +51,21 @@ classdef NDFMeasurement < entity.Measurement
                 obj.sdTransmitance = std(powerNdf ./ power);
             end
             
-            err = util.error_percentage(obj.meanTransmitance);
+            err = obj.errorPercentage(obj.meanTransmitance);
             if err > 3
                 error('diff:larger:transmittance',...
-                    ['mean transmittance for [' obj.ndfName '] seems to larger for desired and reference voltages with factor ' num2str(err)]);
-            end           
-            obj.opticalDensity = mean(-log10(obj.meanTransmitance));
+                    ['mean transmittance for [' obj.ndfName ...
+                    '] seems to larger for desired and reference voltages with factor ' num2str(err)]);
+            end
+            t = obj.meanTransmitance;
+        end
+        
+        function od = get.opticalDensity(obj)
+            od =  mean(-log10(obj.getMeanTransmitances()));
+        end
+        
+        function error = getError(obj, old)
+             error = obj.errorPercentage(obj.opticalDensity, old.opticalDensity);
         end
     end
 end
