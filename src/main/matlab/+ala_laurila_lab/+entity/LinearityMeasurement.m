@@ -57,12 +57,11 @@ classdef LinearityMeasurement < ala_laurila_lab.entity.Measurement
             c = obj.charges;
         end
         
-        function refCharge = getReferenceCharge(obj, referenceVoltage)
+        function charge = getChargeByVoltage(obj, voltage)
             import ala_laurila_lab.util.*;
             
             [c, v] = obj.getCharges();
-            referenceVoltage = get_nearest_match(v, referenceVoltage);
-            refCharge = c(v == referenceVoltage);
+            charge = interp1(v, c, voltage);
         end
         
         function error = getError(obj, old)

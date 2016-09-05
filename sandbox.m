@@ -33,8 +33,8 @@ n = calibration.getNDFMeasurement('A4B', '20-Apr-2016');
 l = calibration.getLinearityByStimulsDuration(20, 'BlueLed', '05-Dec-2015');
 powerSpectrumPerArea = s.getNormalizedPowerSpectrum() * i.getPowerDensity(1, 'volt')/ i.getLedArea();
 
-charge = l.getReferenceCharge(0.0221) / l.getReferenceCharge(1)
-trans =  10^(n.opticalDensity)
+charge = l.getChargeByVoltage(0.03) / l.getChargeByVoltage(1)
+trans =  10^(-n.opticalDensity)
 rstarPerSecond = util.intensity2Rstar(powerSpectrumPerArea, s.wavelength, LAMDA_MAX, ROD_PHOTORECEPTOR_AREA)
 rstarWithoutNDF = charge * rstarPerSecond * 0.02 
 rstarWithNDF = charge * rstarPerSecond * trans* 0.02 
