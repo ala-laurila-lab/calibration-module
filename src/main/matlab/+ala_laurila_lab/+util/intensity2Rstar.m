@@ -13,7 +13,7 @@ function isomerization_rate_sum = intensity2Rstar(power_spectrum, lambda, lambda
 %   spectrum , photoreceptor area and number of photons 
 %   4. return sum of isomerization rate
 %
-import util.*;
+import ala_laurila_lab.util.*;
 
 photons = I2Photon(power_spectrum, lambda);
 absorbance_spectrum = myGovardovskiiNomogram(lambda, lambda_max)';

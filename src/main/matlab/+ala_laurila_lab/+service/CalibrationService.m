@@ -196,7 +196,7 @@ classdef CalibrationService < handle
             calibrationKey = ip.Results.calibrationKey;
             
             compareType = @(e) strcmp(e.calibrationType, class);
-            compareDate = @(e) isempty(date) || datenum(e.calibrationDate) <= datenum(date);
+            compareDate = @(e) isempty(date) || datenum(e.calibrationDate) == datenum(date);
             compareKey = @(e) isempty(calibrationKey) || strcmp(e.calibrationKey, calibrationKey);
             
             query = obj.logManager.createQuery('ala_laurila_lab.entity.AuditLog');

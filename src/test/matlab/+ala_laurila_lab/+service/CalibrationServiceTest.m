@@ -70,7 +70,7 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
         end
         
         function testSpectrumNoise(obj)
-            actual = obj.calibrationService.getSpectralMeasurement('blue', date);
+            actual = obj.calibrationService.getSpectralMeasurement('blue', '21-Apr-2016');
             [~, graph] = actual.getPowerSpectrum(1, 'V');
             a = axes();
             graph(a);

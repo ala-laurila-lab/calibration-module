@@ -9,10 +9,6 @@ classdef SpectralMeasurement < ala_laurila_lab.entity.Measurement
         powerFor9v
     end
     
-    properties(Dependent)
-        powerSpectrum
-    end
-        
     properties(Constant)
         ERROR_MARGIN_PERCENT = 5
     end
@@ -37,6 +33,18 @@ classdef SpectralMeasurement < ala_laurila_lab.entity.Measurement
             power = obj.(field);
             power = util.angle_correction(power, lambda);
             [power, graph] = util.extrapolate_edges(power, lambda);
+        end
+        
+        function spectrum = getNormalizedPowerSpectrum(obj, voltage, unit)
+            
+            if nargin < 2
+                voltage = 1;
+                unit = 'v';
+            end
+            powerSpectrum = obj.getPowerSpectrum(voltage, unit);
+            dLambda = diff(obj.wavelength);
+            dLambda(end + 1) = dLambda(end);
+            spectrum = powerSpectrum/ sum(powerSpectrum .* dLambda);
         end
         
         function error = getError(obj, old)
