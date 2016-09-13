@@ -35,7 +35,7 @@ classdef CalibrationService < handle
         function addLinearityMeasurement(obj, entity, calibratedBy)
             err = 0;
             errorMarigin = ala_laurila_lab.entity.LinearityMeasurement.ERROR_MARGIN_PERCENT;
-           
+            
             try
                 old = obj.getLinearityMeasurement(entity.protocol, entity.calibrationDate);
                 err = entity.getError(old(end));
@@ -116,7 +116,7 @@ classdef CalibrationService < handle
         function m = getLinearityMeasurement(obj, protocol, calibrationDate)
             CLASS = 'ala_laurila_lab.entity.LinearityMeasurement';
             import ala_laurila_lab.entity.*;
-
+            
             log = obj.getAuditLog(CLASS, 'date', calibrationDate, 'calibrationKey', protocol);
             m = ala_laurila_lab.entity.SpectralMeasurement.empty(0, numel(log));
             
@@ -139,7 +139,7 @@ classdef CalibrationService < handle
             
             [~, protocolIndex] = LinearityMeasurement.getSimilarProtocol(protocols, duration, ledType);
             m = obj.getMeasurement(CLASS, log(protocolIndex).calibrationId);
-          
+            
         end
         
         function m = getIntensityMeasurement(obj, ledType, calibrationDate)
@@ -186,8 +186,18 @@ classdef CalibrationService < handle
         end
         
         function map = getLastCalibrationDate(obj)
-             query = obj.logManager.createQuery('ala_laurila_lab.entity.AuditLog');
-             map = query.toDictionary(@(e) e.calibrationType, @(e) e.calibrationDate);
+            query = obj.logManager.createQuery('ala_laurila_lab.entity.AuditLog');
+            map = query.toDictionary(@(e) e.calibrationType, @(e) e.calibrationDate);
+        end
+        
+        function dates = getCalibrationDate(obj, class, key)
+            if nargin < 3
+                key = [];
+            end
+            
+            query = obj.logManager.createQuery('ala_laurila_lab.entity.AuditLog');
+            dates = query.where(@(e) strcmp(e.calibrationType, class) && isempty(key) || strcmp(e.calibrationKey, key))...
+                .select(@(e) e.calibrationDate).toList();
         end
         
         function log = getAuditLog(obj, class, varargin)
@@ -214,7 +224,7 @@ classdef CalibrationService < handle
                 .toArray();
             
             if isempty(log)
-               error('query:tableempty', 'No data found')
+                error('query:tableempty', 'No data found')
             end
         end
         

@@ -48,6 +48,26 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
                 'ala_laurila_lab.entity.SpectralMeasurement'});
             obj.verifyEqual(map.values, {'02-May-2016', '05-Dec-2015', '20-Apr-2016', '21-Apr-2016'});
             
+            dates = service.getCalibrationDate('ala_laurila_lab.entity.IntensityMeasurement');
+            obj.verifyNumElements(dates, 43);
+            obj.verifyEqual(dates{end}, '02-May-2016');
+            
+            dates = service.getCalibrationDate('ala_laurila_lab.entity.LinearityMeasurement');
+            obj.verifyNumElements(dates, 2);
+            obj.verifyEqual(dates{end}, '05-Dec-2015');
+            
+            dates = service.getCalibrationDate('ala_laurila_lab.entity.NDFMeasurement');
+            obj.verifyNumElements(dates, 6);
+            obj.verifyEqual(dates{end}, '20-Apr-2016');
+            
+            dates = service.getCalibrationDate('ala_laurila_lab.entity.SpectralMeasurement');
+            obj.verifyNumElements(dates, 1);
+            obj.verifyEqual(dates{end}, '21-Apr-2016');
+            
+            dates = service.getCalibrationDate('ala_laurila_lab.entity.LinearityMeasurement', 'BlueLed_20_ms');
+            obj.verifyNumElements(dates, 1);
+            obj.verifyEqual(dates{end}, '05-Dec-2015');
+            
         end
         
         function testOpticalDensity(obj)
