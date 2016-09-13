@@ -42,9 +42,12 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
         function testCalibrationDates(obj)
             service = obj.calibrationService;
             
-            log = service.getAuditLog('ala_laurila_lab.entity.LinearityMeasurement');
-            actual = log(end).calibrationDate;
-            obj.verifyEqual(actual, '05-Dec-2015');
+            map = service.getLastCalibrationDate();
+            obj.verifyEqual(sort(map.keys), {'ala_laurila_lab.entity.IntensityMeasurement',...
+                'ala_laurila_lab.entity.LinearityMeasurement', 'ala_laurila_lab.entity.NDFMeasurement',...
+                'ala_laurila_lab.entity.SpectralMeasurement'});
+            obj.verifyEqual(map.values, {'02-May-2016', '05-Dec-2015', '20-Apr-2016', '21-Apr-2016'});
+            
         end
         
         function testOpticalDensity(obj)

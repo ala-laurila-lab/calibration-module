@@ -185,6 +185,11 @@ classdef CalibrationService < handle
             measurement = obj.dataManager.find(measurement);
         end
         
+        function map = getLastCalibrationDate(obj)
+             query = obj.logManager.createQuery('ala_laurila_lab.entity.AuditLog');
+             map = query.toDictionary(@(e) e.calibrationType, @(e) e.calibrationDate);
+        end
+        
         function log = getAuditLog(obj, class, varargin)
             ip = inputParser;
             ip.KeepUnmatched = true;
