@@ -7,29 +7,12 @@ classdef CalibrationService < handle
     
     methods
         
-        function obj = CalibrationService(data, log, path)
+        function obj = CalibrationService(dataPersistence, logPersistence, path)
             if nargin < 3
                 path = which('symphony-persistence.xml');
             end
-            obj.dataManager = mpa.factory.createEntityManager(data, path);
-            obj.logManager = mpa.factory.createEntityManager(log, path);
-        end
-        
-        function add(obj, entity, calibratedBy, err, nextCalibrationDate)
-            
-            auditLog = struct('class', 'ala_laurila_lab.entity.AuditLog',...
-                'calibrationKey', entity.id,...
-                'calibrationDate', entity.calibrationDate,...
-                'calibrationType', class(entity),...
-                'calibratedBy', calibratedBy,...
-                'errorWithPrevious', err,...
-                'nextCalibrationDate', nextCalibrationDate,...
-                'id', [],...
-                'calibrationId', []);
-            
-            entity = obj.dataManager.persist(entity);
-            auditLog.calibrationId = entity.id;
-            obj.logManager.persist(auditLog);
+            obj.dataManager = mpa.factory.createEntityManager(dataPersistence, path);
+            obj.logManager = mpa.factory.createEntityManager(logPersistence, path);
         end
         
         function addLinearityMeasurement(obj, entity, calibratedBy)
@@ -175,16 +158,6 @@ classdef CalibrationService < handle
             end
         end
         
-        function measurement = getMeasurement(obj, entity, id)
-            
-            measurement = entity;
-            if ischar(entity)
-                constructor = str2func(entity);
-                measurement = constructor(id);
-            end
-            measurement = obj.dataManager.find(measurement);
-        end
-        
         function map = getLastCalibrationDate(obj)
             query = obj.logManager.createQuery('ala_laurila_lab.entity.AuditLog');
             map = query.toDictionary(@(e) e.calibrationType, @(e) e.calibrationDate);
@@ -227,6 +200,35 @@ classdef CalibrationService < handle
                 error('query:tableempty', 'No data found')
             end
         end
+    end
+    
+    methods(Access = private)
         
+        function add(obj, entity, calibratedBy, err, nextCalibrationDate)
+            
+            auditLog = struct('class', 'ala_laurila_lab.entity.AuditLog',...
+                'calibrationKey', entity.id,...
+                'calibrationDate', entity.calibrationDate,...
+                'calibrationType', class(entity),...
+                'calibratedBy', calibratedBy,...
+                'errorWithPrevious', err,...
+                'nextCalibrationDate', nextCalibrationDate,...
+                'id', [],...
+                'calibrationId', []);
+            
+            entity = obj.dataManager.persist(entity);
+            auditLog.calibrationId = entity.id;
+            obj.logManager.persist(auditLog);
+        end
+        
+        function measurement = getMeasurement(obj, entity, id)
+            
+            measurement = entity;
+            if ischar(entity)
+                constructor = str2func(entity);
+                measurement = constructor(id);
+            end
+            measurement = obj.dataManager.find(measurement);
+        end
     end
 end

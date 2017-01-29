@@ -2,7 +2,7 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
     
     properties(Constant)
         FILE_NAME = 'test-calibration-module.h5'
-        READ_MODE = true;
+        READ_MODE = false;
     end
     
     properties
@@ -68,6 +68,12 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
             obj.verifyNumElements(dates, 1);
             obj.verifyEqual(dates{end}, '05-Dec-2015');
             
+            dates = service.getCalibrationDate('ala_laurila_lab.entity.LinearityMeasurement', 'RedLed_20_ms');
+            obj.verifyEmpty(dates);
+            
+            dates = service.getCalibrationDate('ala_laurila_lab.entity.Unknown');
+            obj.verifyEmpty(dates);
+            
         end
         
         function testOpticalDensity(obj)
@@ -95,8 +101,10 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
         function testSpectrumNoise(obj)
             actual = obj.calibrationService.getSpectralMeasurement('blue', '21-Apr-2016');
             [~, graph] = actual.getPowerSpectrum(1, 'V');
+            figure;
             a = axes();
             graph(a);
+            %fig2plotly();
         end
         
         function testLinearityCurve(obj)
@@ -108,7 +116,7 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
             [c, v] = linearityFor20Ms.getCharges();
             loglog(a, v, c, '*');
             hold on;
-            loglog(a, linearityFor20Ms.voltages, linearityFor20Ms.meanCharge);
+            loglog(a, linearityFor20Ms.voltages .* linearityFor20Ms.voltageExponent, linearityFor20Ms.meanCharge);
             hold off;
             xlabel(a, 'voltage in milli volts');
             ylabel(a, 'charge');
@@ -117,15 +125,15 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
             linearityFor1000Ms = s.getLinearityByStimulsDuration(1000 , 'BlueLed', '05-Dec-2015');
             a = axes();
             subplot(2, 2, 2, a);
-            [c, v] = linearityFor20Ms.getCharges();
+            [c, v] = linearityFor1000Ms.getCharges();
             loglog(a, v, c, '*');
             hold on;
-            loglog(a, linearityFor1000Ms.voltages, linearityFor1000Ms.meanCharge);
+            loglog(a, linearityFor1000Ms.voltages .* linearityFor1000Ms.voltageExponent, linearityFor1000Ms.meanCharge);
             hold off;
             title(a, 'Linearity curve for 5000 ms');
             
+            figure;
             a = axes();
-            subplot(2,2,[3,4], a);
             [c, v] = linearityFor20Ms.getCharges();
             [x, y] = normalize(v, c);
             loglog(a, x, y, '*');
@@ -135,6 +143,7 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
             [x, y] = normalize(v, c);
             loglog(a, x, y, 'o');
             title(a, 'Linearity curve normalized');
+            %fig2plotly();
             
             function [x, y] = normalize(v, c)
                 vref = ala_laurila_lab.util.get_nearest_match(v, 1000);
