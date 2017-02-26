@@ -7,8 +7,8 @@ function test(package)
     addpath(genpath(fullfile(rootPath, 'lib')));
     addpath(genpath(fullfile(rootPath, 'src')));
     
-    javaaddpath(fullfile(rootPath, 'lib', 'matlab-persistence', 'lib', 'mpa-jutil-0.0.1-SNAPSHOT.jar'));
-    javaaddpath(fullfile(rootPath, 'lib', 'matlab-persistence', 'lib', 'java-uuid-generator-3.1.4.jar'));
+    javaaddpath(which('mpa-jutil-0.0.1-SNAPSHOT.jar'));
+    javaaddpath(which('java-uuid-generator-3.1.4.jar'));
     
     suite = matlab.unittest.TestSuite.fromPackage(package, 'IncludingSubpackages', true);
     results = run(suite);

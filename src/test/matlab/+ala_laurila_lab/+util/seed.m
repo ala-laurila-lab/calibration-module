@@ -45,7 +45,7 @@ for i = 1 : numel(m)
     service.addLinearityMeasurement(e, 'ala-laurila-lab');
 end
 
-e = util.loadSpectralFile();
+e = ala_laurila_lab.util.loadSpectralFile();
 service.addSpectralMeasurement(e, 'ala-laurila-lab');
 
 json = loadjson(which('ndf_21-Apr-2016.json')) ;
