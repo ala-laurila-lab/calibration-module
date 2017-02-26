@@ -1,0 +1,32 @@
+[
+	{
+		"extra": "",
+		"flavor": "",
+		"hook": "",
+		"importance": "",
+		"localHookTemplate": "",
+		"name": "calibration-module",
+		"pathPlacement": "append",
+		"requirementHook": "",
+		"subfolder": "",
+		"toolboxRoot": "",
+		"type": "git",
+		"update": "",
+		"url": "https:\/\/github.com\/ala-laurila-lab\/calibration-module.git"
+	},
+	{
+		"extra": "",
+		"flavor": "",
+		"hook": "",
+		"importance": "",
+		"localHookTemplate": "",
+		"name": "matlab-persistence",
+		"pathPlacement": "append",
+		"requirementHook": "",
+		"subfolder": "",
+		"toolboxRoot": "",
+		"type": "include",
+		"update": "never",
+		"url": ""
+	}
+]
