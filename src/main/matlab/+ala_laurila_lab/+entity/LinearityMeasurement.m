@@ -12,7 +12,7 @@ classdef LinearityMeasurement < ala_laurila_lab.entity.Measurement
         stdOfCharge
     end
     
-    properties(Access = private)
+    properties(Access = protected)
         monotonicVoltages
         charges
     end
@@ -68,7 +68,20 @@ classdef LinearityMeasurement < ala_laurila_lab.entity.Measurement
             import ala_laurila_lab.util.*;
             
             refVoltage = 1 * obj.toExponent('volt');
-            error = obj.errorPercentage(obj.getReferenceCharge(refVoltage), old.getReferenceCharge(refVoltage));
+            error = obj.errorPercentage(obj.getChargeByVoltage(refVoltage), old.getChargeByVoltage(refVoltage));
+        end
+
+        function addVoltage(obj, voltage, exponent)
+            if nargin < 3
+                exponent = 1;
+            end
+            obj.voltages = [obj.voltages, voltage]; %# ok<AGROW>
+            obj.voltageExponent = [obj.voltageExponent, exponent]; %# ok<AGROW>
+        end
+
+        function addCharge(obj, charge)
+            obj.meanCharge = [obj.meanCharge, mean(charge)]; %# ok<AGROW>
+            obj.stdOfCharge = [obj.stdOfCharge, std(charge)]; %# ok<AGROW>
         end
     end
     

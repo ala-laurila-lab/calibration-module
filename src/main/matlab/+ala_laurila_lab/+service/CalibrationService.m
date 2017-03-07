@@ -1,4 +1,10 @@
-classdef CalibrationService < handle
+classdef CalibrationService < handle & mdepin.Bean
+    
+    properties
+        dataPersistence
+        logPersistence
+        persistenceXml
+    end
     
     properties(Access = private)
         dataManager
@@ -6,14 +12,27 @@ classdef CalibrationService < handle
     end
     
     methods
+         
+        function obj = CalibrationService(config)
+            obj = obj@mdepin.Bean(config);
+         end
         
-        function obj = CalibrationService(dataPersistence, logPersistence, path)
-            if nargin < 3
-                path = which('symphony-persistence.xml');
+        function instance = get.dataManager(obj)
+            if isempty(obj.dataManager)
+                obj.dataManager = mpa.factory.createEntityManager(obj.dataPersistence, obj.persistenceXml);
             end
-            obj.dataManager = mpa.factory.createEntityManager(dataPersistence, path);
-            obj.logManager = mpa.factory.createEntityManager(logPersistence, path);
+            instance = obj.dataManager;
         end
+        
+        function instance = get.logManager(obj)
+            if isempty(obj.logManager)
+                obj.logManager = mpa.factory.createEntityManager(obj.logPersistence, obj.persistenceXml);
+            end
+            instance = obj.logManager;
+        end
+    end
+    
+    methods
         
         function addLinearityMeasurement(obj, entity, calibratedBy)
             err = 0;
@@ -122,7 +141,6 @@ classdef CalibrationService < handle
             
             [~, protocolIndex] = LinearityMeasurement.getSimilarProtocol(protocols, duration, ledType);
             m = obj.getMeasurement(CLASS, log(protocolIndex).calibrationId);
-            
         end
         
         function m = getIntensityMeasurement(obj, ledType, calibrationDate)

@@ -1,5 +1,4 @@
-path = which('test-symphony-persistence.xml');
-service = ala_laurila_lab.service.CalibrationService('patch-rig-data', 'patch-rig-log', path);
+function seed(service)
 
 json = loadjson(which('intensity.json')) ;
 m = json.intensity{1};

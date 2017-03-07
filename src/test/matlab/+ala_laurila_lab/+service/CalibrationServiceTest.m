@@ -18,22 +18,28 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
         
         function setFixture(obj)
             import ala_laurila_lab.*;
-            
-            path = which('test-symphony-persistence.xml');
+           
             obj.fixture = [fileparts(which('test.m')) filesep 'fixtures'];
+            obj.calibrationService = createInstance();
             
             if obj.READ_MODE && exist(obj.fixture, 'file')
-                obj.calibrationService = service.CalibrationService('patch-rig-data', 'patch-rig-log', path);
                 return
             end
             
             if exist(obj.fixture, 'file')
                 rmdir(obj.fixture, 's');
-            end
-            
+            end           
             mkdir(obj.fixture);
-            obj.calibrationService = service.CalibrationService('patch-rig-data', 'patch-rig-log', path);
-            util.seed;
+            util.seed(obj.calibrationService);
+           
+            function instance = createInstance()
+                 config = struct();
+                 config.service.class = 'ala_laurila_lab.service.CalibrationService';
+                 config.service.dataPersistence = 'patch-rig-data';
+                 config.service.logPersistence = 'patch-rig-log';
+                 config.service.persistenceXml = which('test-symphony-persistence.xml');
+                 instance = mdepin.createApplication(config, 'service');
+            end
         end
     end
     
