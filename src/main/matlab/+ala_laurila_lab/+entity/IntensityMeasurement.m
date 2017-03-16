@@ -9,11 +9,11 @@ classdef IntensityMeasurement < ala_laurila_lab.entity.Measurement
         diameterX
         diameterY
         diameterExponent
-        spotFocus
-        spotFocusExponent
+        stageFocus
+        stageFocusExponent
         % Table
-        voltages
-        voltageExponent
+        ledInput
+        ledInputExponent
         powers
         powerExponent
     end
@@ -23,7 +23,7 @@ classdef IntensityMeasurement < ala_laurila_lab.entity.Measurement
     end
     
     properties(Constant)
-        ERROR_MARGIN_PERCENT = 20
+        ERROR_MARGIN_PERCENT = 10
     end
     
     methods
@@ -45,20 +45,25 @@ classdef IntensityMeasurement < ala_laurila_lab.entity.Measurement
             area = pi *(radius * obj.diameterExponent) ^2;
         end
         
-        function power = getPowerDensity(obj, voltage, unit)
-            voltage = voltage * obj.toExponent(unit);
-            voltages = obj.voltages .* obj.voltageExponent;
-            i = find(voltages == voltage);
+        function power = getPowerDensity(obj, ledInput, unit)
+            
+            if nargin < 3
+                unit = 'default';
+            end
+            
+            ledInput = ledInput * obj.toExponent(unit);
+            ledInputs = obj.ledInput .* obj.ledInputExponent;
+            i = find(ledInputs == ledInput);
             
             if isempty(i)
-                error('intensity:voltage:notfound', 'Intensity not found for given reference voltage');
+                error('intensity:ledInput:notfound', 'Intensity not found for given reference input');
             end
             power = obj.powers(i) * obj.powerExponent(i);
         end
         
         function error = getError(obj, old)
-             error = obj.errorPercentage(obj.getPowerDensity(1, 'volt'), ...
-                 old.getPowerDensity(1, 'volt'));
+             error = obj.errorPercentage(obj.getPowerDensity(old.referenceInput), ...
+                 old.getPowerDensity(old.referenceInput));
         end
     end
 end

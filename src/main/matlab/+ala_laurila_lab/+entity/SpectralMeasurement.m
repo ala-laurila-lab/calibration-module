@@ -1,12 +1,8 @@
-classdef SpectralMeasurement < ala_laurila_lab.entity.Measurement
+classdef (Abstract)SpectralMeasurement < ala_laurila_lab.entity.Measurement
     
     properties
         ledType
         wavelength
-        powerFor100mv
-        powerFor1v
-        powerFor5v
-        powerFor9v
     end
     
     properties(Constant)
@@ -20,28 +16,13 @@ classdef SpectralMeasurement < ala_laurila_lab.entity.Measurement
             obj.ledType = ledType;
         end
         
-        function addPowerSpectrum(obj, voltage, unit, data)
-            field = strcat('powerFor', num2str(voltage), lower(unit));
-            obj.(field) = data;
+        function [power, graph] = getPowerSpectrum(obj, field)
+            [power, graph] = obj.getPowerSpectrumByField(field);
         end
         
-        function [power, graph] = getPowerSpectrum(obj, voltage, unit)
-            import ala_laurila_lab.*;
+        function spectrum = getNormalizedPowerSpectrum(obj, field)
             
-            lambda = obj.wavelength;
-            field = strcat('powerFor', num2str(voltage), lower(unit));
-            power = obj.(field);
-            power = util.angle_correction(power, lambda);
-            [power, graph] = util.extrapolate_edges(power, lambda);
-        end
-        
-        function spectrum = getNormalizedPowerSpectrum(obj, voltage, unit)
-            
-            if nargin < 2
-                voltage = 1;
-                unit = 'v';
-            end
-            powerSpectrum = obj.getPowerSpectrum(voltage, unit);
+            powerSpectrum = obj.getPowerSpectrumByField(field);
             dLambda = diff(obj.wavelength);
             dLambda(end + 1) = dLambda(end);
             spectrum = powerSpectrum/ sum(powerSpectrum .* dLambda);
@@ -51,6 +32,32 @@ classdef SpectralMeasurement < ala_laurila_lab.entity.Measurement
             % TODO caluclate error
             disp('TODO calculater error')
             error = 1;
+        end
+    end
+    
+    methods (Access = private)
+        function [power, graph] = getPowerSpectrumByField(obj, field)
+            import ala_laurila_lab.*;
+            
+            lambda = obj.wavelength;
+            power = obj.(field);
+            power = util.angle_correction(power, lambda);
+            [power, graph] = util.extrapolate_edges(power, lambda);
+        end
+    end
+    
+    methods(Abstract)
+        addPowerSpectrum(obj, field, power);
+    end
+    
+    methods(Static)
+        
+        function CLASS = getClass(device)
+            if strfind(lower(device), 'led')
+                CLASS = 'ala_laurila_lab.entity.LEDSpectrum';
+            elseif strfind(lower(device), 'projector')
+                CLASS = 'ala_laurila_lab.entity.ProjectorSpectrum';
+            end
         end
     end
 end

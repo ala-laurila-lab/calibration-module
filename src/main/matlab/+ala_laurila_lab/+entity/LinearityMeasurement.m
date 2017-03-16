@@ -5,16 +5,17 @@ classdef LinearityMeasurement < ala_laurila_lab.entity.Measurement
         protocol
         stimulsDuration
         ledType
+        stimulsSize
         % table
-        voltages
-        voltageExponent
-        meanCharge
-        stdOfCharge
+        ledInput
+        ledInputExponent
+        meanFlux
+        stdOfFlux
     end
     
     properties(Access = protected)
-        monotonicVoltages
-        charges
+        monotonicInput
+        flux
     end
     
     properties(Constant)
@@ -32,64 +33,59 @@ classdef LinearityMeasurement < ala_laurila_lab.entity.Measurement
             obj.stimulsDuration = [substrings{2:end}];
         end
         
-        function [c, v] = getCharges(obj)
+        function [f, i] = getFluxAndInput(obj)
             
-            % setChargeMap - set charge map with non monotonic voltage
-            %
             %   Due to effect of ndf there will be non monotonic points in C
             %   To avoid it, compare the difference in voltage(x) between
             %   adjacent point. If it is lesser than 1 remove those indices
             
-            if ~ isempty(obj.charges)
-                v = obj.monotonicVoltages;
-                c = obj.charges;
+            if ~ isempty(obj.flux)
+                i = obj.monotonicInput;
+                f = obj.flux;
                 return
             end
             
-            [v, indices] = unique(obj.voltages);
-            charge = obj.meanCharge(indices);
-            removeIdx = find(diff(v) < 1);
-            retainIdx = setdiff(1 : length(v), removeIdx);
-            obj.monotonicVoltages = v(retainIdx) .* obj.voltageExponent(retainIdx);
-            obj.charges = charge(retainIdx);
+            [i, indices] = unique(obj.ledInput);
+            uniqeFlux = obj.meanFlux(indices);
+            removeIdx = find(diff(i) < 1);
+            retainIdx = setdiff(1 : length(i), removeIdx);
+            obj.monotonicInput = i(retainIdx) .* obj.ledInputExponent(retainIdx);
+            obj.flux = uniqeFlux(retainIdx);
             
-            v = obj.monotonicVoltages;
-            c = obj.charges;
+            i = obj.monotonicInput;
+            f = obj.flux;
         end
         
-        function charge = getChargeByVoltage(obj, voltage)
+        function flux = getFluxByInput(obj, input)
             import ala_laurila_lab.util.*;
             
-            [c, v] = obj.getCharges();
-            charge = interp1(v, c, voltage);
+            [f, i] = obj.getFluxAndInput();
+            flux = interp1(f, i, input);
         end
         
         function error = getError(obj, old)
-            import ala_laurila_lab.util.*;
-            
-            refVoltage = 1 * obj.toExponent('volt');
-            error = obj.errorPercentage(obj.getChargeByVoltage(refVoltage), old.getChargeByVoltage(refVoltage));
+            error = obj.errorPercentage(obj.getFluxByInput(old.referenceInput), old.getFluxByInput(old.referenceInput));
         end
-
-        function addVoltage(obj, voltage, exponent)
+        
+        function addLedInput(obj, ledInput, exponent)
             if nargin < 3
                 exponent = 1;
             end
-            obj.voltages = [obj.voltages, voltage]; %# ok<AGROW>
-            obj.voltageExponent = [obj.voltageExponent, exponent]; %# ok<AGROW>
+            obj.ledInput = [obj.ledInput, ledInput]; %# ok<AGROW>
+            obj.ledInputExponent = [obj.ledInputExponent, exponent]; %# ok<AGROW>
         end
-
-        function addCharge(obj, charge)
-            obj.meanCharge = [obj.meanCharge, mean(charge)]; %# ok<AGROW>
-            obj.stdOfCharge = [obj.stdOfCharge, std(charge)]; %# ok<AGROW>
+        
+        function addFlux(obj, flux)
+            obj.meanFlux = [obj.meanFlux, mean(flux)]; %# ok<AGROW>
+            obj.stdOfFlux = [obj.stdOfFlux, std(flux)]; %# ok<AGROW>
         end
     end
     
     methods(Static)
         
         function [protocol, protocolIndex] = getSimilarProtocol(protocols, duration, ledType)
-             import ala_laurila_lab.util.*;
-             
+            import ala_laurila_lab.util.*;
+            
             keys = struct('ledType', [], 'durations', []);
             
             for i = 1 : numel(protocols)

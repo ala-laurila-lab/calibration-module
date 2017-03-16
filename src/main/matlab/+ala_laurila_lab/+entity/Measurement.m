@@ -4,6 +4,7 @@ classdef Measurement < handle
         id
         calibrationDate
         note
+        referenceInput
     end
     
     methods

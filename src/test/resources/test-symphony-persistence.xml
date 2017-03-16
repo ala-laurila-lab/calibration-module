@@ -8,7 +8,8 @@
 		<provider>mpa.h5.H5MatlabProvider</provider>
 		<class>ala_laurila_lab.entity.IntensityMeasurement</class>
 		<class>ala_laurila_lab.entity.LinearityMeasurement</class>
-		<class>ala_laurila_lab.entity.SpectralMeasurement</class>
+		<class>ala_laurila_lab.entity.LEDSpectrum</class>
+        <class>ala_laurila_lab.entity.ProjectorSpectrum</class>
 		<class>ala_laurila_lab.entity.NDFMeasurement</class>
 		<properties>
 			<property name="local-path"

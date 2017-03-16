@@ -3,8 +3,8 @@ classdef NDFMeasurement < ala_laurila_lab.entity.Measurement
     properties
         ndfName
         % table
-        voltages
-        voltageExponent
+        ledInput
+        ledInputExponent
         powers
         powerExponent
         powerWithNdf
@@ -38,13 +38,13 @@ classdef NDFMeasurement < ala_laurila_lab.entity.Measurement
                 return
             end
             
-            v = unique(obj.voltages);
-            n = numel(v);
+            input = unique(obj.ledInput);
+            n = numel(input);
             obj.meanTransmitance = ones(1, n);
             obj.sdTransmitance = ones(1, n);
             
             for i = 1 : n
-                indices = find(obj.voltages == v(i));
+                indices = find(obj.ledInput == input(i));
                 powerNdf = obj.powerWithNdf(indices) .* obj.powerWithNdfExponent(indices);
                 power = obj.powers(indices) .* obj.powerExponent(indices);
                 obj.meanTransmitance(i) = mean(powerNdf ./ power);
@@ -55,7 +55,7 @@ classdef NDFMeasurement < ala_laurila_lab.entity.Measurement
             if err > 3
                 error('diff:larger:transmittance',...
                     ['mean transmittance for [' obj.ndfName ...
-                    '] seems to larger for desired and reference voltages with factor ' num2str(err)]);
+                    '] seems to larger for desired and reference input with factor ' num2str(err)]);
             end
             t = obj.meanTransmitance;
         end
