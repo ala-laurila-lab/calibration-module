@@ -18,7 +18,7 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
         
         function setFixture(obj)
             import ala_laurila_lab.*;
-           
+            
             obj.fixture = [fileparts(which('test.m')) filesep 'fixtures'];
             obj.calibrationService = createInstance();
             
@@ -28,17 +28,17 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
             
             if exist(obj.fixture, 'file')
                 rmdir(obj.fixture, 's');
-            end           
+            end
             mkdir(obj.fixture);
             util.seed(obj.calibrationService);
-           
+            
             function instance = createInstance()
-                 config = struct();
-                 config.service.class = 'ala_laurila_lab.service.CalibrationService';
-                 config.service.dataPersistence = 'patch-rig-data';
-                 config.service.logPersistence = 'patch-rig-log';
-                 config.service.persistenceXml = which('test-symphony-persistence.xml');
-                 instance = mdepin.createApplication(config, 'service');
+                config = struct();
+                config.service.class = 'ala_laurila_lab.service.CalibrationService';
+                config.service.dataPersistence = 'patch-rig-data';
+                config.service.logPersistence = 'patch-rig-log';
+                config.service.persistenceXml = which('test-symphony-persistence.xml');
+                instance = mdepin.createApplication(config, 'service');
             end
         end
     end
@@ -173,6 +173,9 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
         function testGetLinearityByStimulsDuration(obj)
             s = obj.calibrationService;
             actual = s.getLinearityByStimulsDuration(20, 'BlueLed', '05-Dec-2015');
+            obj.verifyEqual(actual.stimulsDuration, '20ms');
+            
+            actual = s.getLinearityByStimulsDuration(20, 'BlueLed');
             obj.verifyEqual(actual.stimulsDuration, '20ms');
             
             handle = @() s.getLinearityByStimulsDuration(10, 'BlueLed', '05-Dec-2015');

@@ -12,10 +12,10 @@ classdef CalibrationService < handle & mdepin.Bean
     end
     
     methods
-         
+        
         function obj = CalibrationService(config)
             obj = obj@mdepin.Bean(config);
-         end
+        end
         
         function instance = get.dataManager(obj)
             if isempty(obj.dataManager)
@@ -132,15 +132,19 @@ classdef CalibrationService < handle & mdepin.Bean
             CLASS = 'ala_laurila_lab.entity.LinearityMeasurement';
             import ala_laurila_lab.entity.*;
             
-            if isempty(calibrationDate)
-                error('calibrationDate:empty', 'calibration date shouldnot be empty');
+            if nargin < 4
+                calibrationDate = '';
             end
             
             log = obj.getAuditLog(CLASS, 'date', calibrationDate);
             protocols = {log(:).calibrationKey};
             
             [~, protocolIndex] = LinearityMeasurement.getSimilarProtocol(protocols, duration, ledType);
-            m = obj.getMeasurement(CLASS, log(protocolIndex).calibrationId);
+            
+            m = ala_laurila_lab.entity.LinearityMeasurement.empty(0, numel(protocolIndex));
+            for i = 1 : numel(protocolIndex)
+                m(i) = obj.getMeasurement(CLASS, log(protocolIndex(i)).calibrationId);
+            end
         end
         
         function m = getIntensityMeasurement(obj, ledType, calibrationDate)
@@ -181,8 +185,8 @@ classdef CalibrationService < handle & mdepin.Bean
         end
         
         function date = getLastCalibrationDate(obj, class, key)
-             date = obj.getCalibrationDate(class, key);
-             date = date{end};
+            date = obj.getCalibrationDate(class, key);
+            date = date{end};
         end
         
         function map = getAllCalibrationDate(obj)
