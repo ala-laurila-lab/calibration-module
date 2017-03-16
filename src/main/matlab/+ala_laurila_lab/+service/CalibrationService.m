@@ -60,7 +60,7 @@ classdef CalibrationService < handle & mdepin.Bean
             errorMarigin = ala_laurila_lab.entity.IntensityMeasurement.ERROR_MARGIN_PERCENT;
             
             try
-                old = obj.getIntensityMeasurement(entity.ledType, entity.calibrationDate);
+                old = obj.getIntensityMeasurement(entity.ledType, obj.getLastCalibrationDate(class(entity), entity.ledType));
                 err = entity.getError(old(end));
             catch exception
                 if ~ strcmp(exception.identifier, 'query:tableempty')
@@ -80,7 +80,7 @@ classdef CalibrationService < handle & mdepin.Bean
             errorMarigin = ala_laurila_lab.entity.SpectralMeasurement.ERROR_MARGIN_PERCENT;
             
             try
-                old = obj.getSpectralMeasurement(entity.ledType, entity.calibrationDate);
+                old = obj.getSpectralMeasurement(entity.ledType, entity.calibrationDate, class(entity));
                 err = entity.getError(old(end));
             catch exception
                 if ~ strcmp(exception.identifier, 'query:tableempty')
@@ -120,7 +120,7 @@ classdef CalibrationService < handle & mdepin.Bean
             import ala_laurila_lab.entity.*;
             
             log = obj.getAuditLog(CLASS, 'date', calibrationDate, 'calibrationKey', protocol);
-            m = ala_laurila_lab.entity.SpectralMeasurement.empty(0, numel(log));
+            m = ala_laurila_lab.entity.LinearityMeasurement.empty(0, numel(log));
             
             for i = 1 : numel(log)
                 m(i) = obj.getMeasurement(CLASS, log(i).calibrationId);
@@ -154,11 +154,15 @@ classdef CalibrationService < handle & mdepin.Bean
             end
         end
         
-        function m = getSpectralMeasurement(obj, ledType, calibrationDate)
+        function m = getSpectralMeasurement(obj, ledType, calibrationDate, device)
             
-            CLASS = 'ala_laurila_lab.entity.SpectralMeasurement';
+            CLASS = ala_laurila_lab.entity.SpectralMeasurement.getClass(device);
             log = obj.getAuditLog(CLASS, 'date', calibrationDate, 'calibrationKey', ledType);
-            m = ala_laurila_lab.entity.SpectralMeasurement.empty(0, numel(log));
+            
+            if isempty(log)
+                m = [];
+                return;
+            end
             
             for i = 1 : numel(log)
                 m(i) = obj.getMeasurement(CLASS, log(i).calibrationId);
@@ -176,7 +180,12 @@ classdef CalibrationService < handle & mdepin.Bean
             end
         end
         
-        function map = getLastCalibrationDate(obj)
+        function date = getLastCalibrationDate(obj, class, key)
+             date = obj.getCalibrationDate(class, key);
+             date = date{end};
+        end
+        
+        function map = getAllCalibrationDate(obj)
             query = obj.logManager.createQuery('ala_laurila_lab.entity.AuditLog');
             map = query.toDictionary(@(e) e.calibrationType, @(e) e.calibrationDate);
         end
@@ -187,6 +196,9 @@ classdef CalibrationService < handle & mdepin.Bean
             end
             
             query = obj.logManager.createQuery('ala_laurila_lab.entity.AuditLog');
+            if query.count == 0
+                error('query:tableempty', 'No data found')
+            end
             dates = query.where(@(e) strcmp(e.calibrationType, class) && isempty(key) || strcmp(e.calibrationKey, key))...
                 .select(@(e) e.calibrationDate).toList();
         end

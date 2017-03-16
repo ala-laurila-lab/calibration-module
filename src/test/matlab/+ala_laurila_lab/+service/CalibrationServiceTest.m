@@ -48,14 +48,15 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
         function testCalibrationDates(obj)
             service = obj.calibrationService;
             
-            map = service.getLastCalibrationDate();
-            obj.verifyEqual(sort(map.keys), {'ala_laurila_lab.entity.IntensityMeasurement',...
+            map = service.getAllCalibrationDate();
+            obj.verifyEqual(sort(map.keys), sort({'ala_laurila_lab.entity.IntensityMeasurement',...
                 'ala_laurila_lab.entity.LinearityMeasurement', 'ala_laurila_lab.entity.NDFMeasurement',...
-                'ala_laurila_lab.entity.SpectralMeasurement'});
-            obj.verifyEqual(map.values, {'02-May-2016', '05-Dec-2015', '20-Apr-2016', '21-Apr-2016'});
+                'ala_laurila_lab.entity.LEDSpectrum', 'ala_laurila_lab.entity.ProjectorSpectrum'}));
+            
+            obj.verifyEqual(sort(map.values), sort({'01-Mar-2017', '02-May-2016', '05-Dec-2015', '20-Apr-2016', '21-Apr-2016'}));
             
             dates = service.getCalibrationDate('ala_laurila_lab.entity.IntensityMeasurement');
-            obj.verifyNumElements(dates, 43);
+            obj.verifyNumElements(dates, 41);
             obj.verifyEqual(dates{end}, '02-May-2016');
             
             dates = service.getCalibrationDate('ala_laurila_lab.entity.LinearityMeasurement');
@@ -66,7 +67,7 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
             obj.verifyNumElements(dates, 6);
             obj.verifyEqual(dates{end}, '20-Apr-2016');
             
-            dates = service.getCalibrationDate('ala_laurila_lab.entity.SpectralMeasurement');
+            dates = service.getCalibrationDate('ala_laurila_lab.entity.LEDSpectrum');
             obj.verifyNumElements(dates, 1);
             obj.verifyEqual(dates{end}, '21-Apr-2016');
             
@@ -76,6 +77,10 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
             
             dates = service.getCalibrationDate('ala_laurila_lab.entity.LinearityMeasurement', 'RedLed_20_ms');
             obj.verifyEmpty(dates);
+            
+            dates = service.getCalibrationDate('ala_laurila_lab.entity.ProjectorSpectrum');
+            obj.verifyNumElements(dates, 1);
+            obj.verifyEqual(dates{end}, '01-Mar-2017');
             
             dates = service.getCalibrationDate('ala_laurila_lab.entity.Unknown');
             obj.verifyEmpty(dates);
@@ -105,12 +110,18 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
         end
         
         function testSpectrumNoise(obj)
-            actual = obj.calibrationService.getSpectralMeasurement('blue', '21-Apr-2016');
+            actual = obj.calibrationService.getSpectralMeasurement('blue', '21-Apr-2016', 'led');
             [~, graph] = actual.getPowerSpectrum(1, 'V');
             figure;
             a = axes();
             graph(a);
             %fig2plotly();
+            figure;
+            date = obj.calibrationService.getLastCalibrationDate('ala_laurila_lab.entity.ProjectorSpectrum', 'BlueLed');
+            actual = obj.calibrationService.getSpectralMeasurement('BlueLed', date, 'projector');
+            [~, graph] = actual.getPowerSpectrum(12, 500, 'um');
+            a = axes();
+            graph(a);
         end
         
         function testLinearityCurve(obj)
@@ -119,10 +130,10 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
             figure;
             a = axes();
             subplot(2, 2, 1, a);
-            [c, v] = linearityFor20Ms.getCharges();
+            [c, v] = linearityFor20Ms.getFluxAndInput();
             loglog(a, v, c, '*');
             hold on;
-            loglog(a, linearityFor20Ms.voltages .* linearityFor20Ms.voltageExponent, linearityFor20Ms.meanCharge);
+            loglog(a, linearityFor20Ms.ledInput .* linearityFor20Ms.ledInputExponent, linearityFor20Ms.meanFlux);
             hold off;
             xlabel(a, 'voltage in milli volts');
             ylabel(a, 'charge');
@@ -131,21 +142,21 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
             linearityFor1000Ms = s.getLinearityByStimulsDuration(1000 , 'BlueLed', '05-Dec-2015');
             a = axes();
             subplot(2, 2, 2, a);
-            [c, v] = linearityFor1000Ms.getCharges();
+            [c, v] = linearityFor1000Ms.getFluxAndInput();
             loglog(a, v, c, '*');
             hold on;
-            loglog(a, linearityFor1000Ms.voltages .* linearityFor1000Ms.voltageExponent, linearityFor1000Ms.meanCharge);
+            loglog(a, linearityFor1000Ms.ledInput .* linearityFor1000Ms.ledInputExponent, linearityFor1000Ms.meanFlux);
             hold off;
             title(a, 'Linearity curve for 5000 ms');
             
             figure;
             a = axes();
-            [c, v] = linearityFor20Ms.getCharges();
+            [c, v] = linearityFor20Ms.getFluxAndInput();
             [x, y] = normalize(v, c);
             loglog(a, x, y, '*');
             
             hold on;
-            [c, v] = linearityFor1000Ms.getCharges();
+            [c, v] = linearityFor1000Ms.getFluxAndInput();
             [x, y] = normalize(v, c);
             loglog(a, x, y, 'o');
             title(a, 'Linearity curve normalized');

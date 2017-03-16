@@ -81,9 +81,9 @@ plotFunctionHandle = @(g) plotSpectrum(g);
         plot(graph, lambda(retainIdx), pow_log(retainIdx));
         hold on;
         plot(graph, lambda(idx_r), pow_log(idx_r), 'r');
-        %pause(1);
+        pause(1);
         plot(graph, lambda(idx_l), pow_log(idx_l),'r');
-        %pause(1)
+        pause(1)
         plot(graph, lambda_out, pow_out_log);
         xlabel(graph, 'Wavelength in (nm)');
         ylabel(graph, 'power spectrum in log scale');
