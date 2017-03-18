@@ -110,7 +110,7 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
         end
         
         function testSpectrumNoise(obj)
-            actual = obj.calibrationService.getSpectralMeasurement('blue', '21-Apr-2016', 'led');
+            actual = obj.calibrationService.getSpectralMeasurement('blue', 'led', '21-Apr-2016');
             [~, graph] = actual.getPowerSpectrum(1, 'V');
             figure;
             a = axes();
@@ -118,7 +118,7 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
             %fig2plotly();
             figure;
             date = obj.calibrationService.getLastCalibrationDate('ala_laurila_lab.entity.ProjectorSpectrum', 'BlueLed');
-            actual = obj.calibrationService.getSpectralMeasurement('BlueLed', date, 'projector');
+            actual = obj.calibrationService.getSpectralMeasurement('BlueLed', 'projector', date);
             [~, graph] = actual.getPowerSpectrum(12, 500, 'um');
             a = axes();
             graph(a);

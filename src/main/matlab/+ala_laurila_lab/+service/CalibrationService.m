@@ -30,6 +30,13 @@ classdef CalibrationService < handle & mdepin.Bean
             end
             instance = obj.logManager;
         end
+
+        function delete(obj)
+            obj.dataManager.close();
+            obj.logManager.close();
+            obj.dataManager = [];
+            obj.logManager = [];
+        end
     end
     
     methods
@@ -39,7 +46,7 @@ classdef CalibrationService < handle & mdepin.Bean
             errorMarigin = ala_laurila_lab.entity.LinearityMeasurement.ERROR_MARGIN_PERCENT;
             
             try
-                old = obj.getLinearityMeasurement(entity.protocol, entity.calibrationDate);
+                old = obj.getLinearityMeasurement(entity.protocol);
                 err = entity.getError(old(end));
             catch exception
                 if ~ strcmp(exception.identifier, 'query:tableempty')
@@ -60,7 +67,7 @@ classdef CalibrationService < handle & mdepin.Bean
             errorMarigin = ala_laurila_lab.entity.IntensityMeasurement.ERROR_MARGIN_PERCENT;
             
             try
-                old = obj.getIntensityMeasurement(entity.ledType, obj.getLastCalibrationDate(class(entity), entity.ledType));
+                old = obj.getIntensityMeasurement(entity.ledType);
                 err = entity.getError(old(end));
             catch exception
                 if ~ strcmp(exception.identifier, 'query:tableempty')
@@ -80,7 +87,7 @@ classdef CalibrationService < handle & mdepin.Bean
             errorMarigin = ala_laurila_lab.entity.SpectralMeasurement.ERROR_MARGIN_PERCENT;
             
             try
-                old = obj.getSpectralMeasurement(entity.ledType, entity.calibrationDate, class(entity));
+                old = obj.getSpectralMeasurement(entity.ledType, class(entity));
                 err = entity.getError(old(end));
             catch exception
                 if ~ strcmp(exception.identifier, 'query:tableempty')
@@ -100,7 +107,7 @@ classdef CalibrationService < handle & mdepin.Bean
             errorMarigin = ala_laurila_lab.entity.NDFMeasurement.ERROR_MARGIN_PERCENT;
             
             try
-                old = obj.getNDFMeasurement(entity.ndfName, entity.calibrationDate);
+                old = obj.getNDFMeasurement(entity.ndfName);
                 err = entity.getError(old(end));
             catch exception
                 if ~ strcmp(exception.identifier, 'query:tableempty')
@@ -118,13 +125,14 @@ classdef CalibrationService < handle & mdepin.Bean
         function m = getLinearityMeasurement(obj, protocol, calibrationDate)
             CLASS = 'ala_laurila_lab.entity.LinearityMeasurement';
             import ala_laurila_lab.entity.*;
-            
-            log = obj.getAuditLog(CLASS, 'date', calibrationDate, 'calibrationKey', protocol);
-            m = ala_laurila_lab.entity.LinearityMeasurement.empty(0, numel(log));
-            
-            for i = 1 : numel(log)
-                m(i) = obj.getMeasurement(CLASS, log(i).calibrationId);
+
+            if nargin < 3
+                log = obj.getAuditLog(CLASS, 'calibrationKey', protocol);
+            else
+                log = obj.getAuditLog(CLASS, 'date', calibrationDate, 'calibrationKey', protocol);
             end
+
+            m = obj.getMeasurement(CLASS, log);
         end
         
         function m = getLinearityByStimulsDuration(obj, duration, ledType, calibrationDate)
@@ -133,55 +141,51 @@ classdef CalibrationService < handle & mdepin.Bean
             import ala_laurila_lab.entity.*;
             
             if nargin < 4
-                calibrationDate = '';
-            end
-            
-            log = obj.getAuditLog(CLASS, 'date', calibrationDate);
+                log = obj.getAuditLog(CLASS);
+            else
+                log = obj.getAuditLog(CLASS, 'date', calibrationDate);
+            end 
+
             protocols = {log(:).calibrationKey};
-            
             [~, protocolIndex] = LinearityMeasurement.getSimilarProtocol(protocols, duration, ledType);
-            
-            m = ala_laurila_lab.entity.LinearityMeasurement.empty(0, numel(protocolIndex));
-            for i = 1 : numel(protocolIndex)
-                m(i) = obj.getMeasurement(CLASS, log(protocolIndex(i)).calibrationId);
-            end
+            m = obj.getMeasurement(CLASS, log(protocolIndex));
         end
         
         function m = getIntensityMeasurement(obj, ledType, calibrationDate)
             
             CLASS = 'ala_laurila_lab.entity.IntensityMeasurement';
-            log = obj.getAuditLog(CLASS, 'date', calibrationDate, 'calibrationKey', ledType);
-            m = ala_laurila_lab.entity.IntensityMeasurement.empty(0, numel(log));
-            
-            for i = 1 : numel(log)
-                m(i) = obj.getMeasurement(CLASS, log(i).calibrationId);
+            import ala_laurila_lab.entity.*;
+
+            if nargin < 3
+                log = obj.getAuditLog(CLASS, 'calibrationKey', ledType);
+            else
+                log = obj.getAuditLog(CLASS, 'date', calibrationDate, 'calibrationKey', ledType);
             end
+            m = obj.getMeasurement(CLASS, log);
         end
         
-        function m = getSpectralMeasurement(obj, ledType, calibrationDate, device)
+        function m = getSpectralMeasurement(obj, ledType, device, calibrationDate)
             
             CLASS = ala_laurila_lab.entity.SpectralMeasurement.getClass(device);
-            log = obj.getAuditLog(CLASS, 'date', calibrationDate, 'calibrationKey', ledType);
+            import ala_laurila_lab.entity.*;
             
-            if isempty(log)
-                m = [];
-                return;
+            if nargin < 4
+                log = obj.getAuditLog(CLASS, 'calibrationKey', ledType);
+            else
+                log = obj.getAuditLog(CLASS, 'date', calibrationDate, 'calibrationKey', ledType);
             end
-            
-            for i = 1 : numel(log)
-                m(i) = obj.getMeasurement(CLASS, log(i).calibrationId);
-            end
+            m = obj.getMeasurement(CLASS, log);
         end
         
         function m = getNDFMeasurement(obj, ndfName, calibrationDate)
             
             CLASS = 'ala_laurila_lab.entity.NDFMeasurement';
-            log = obj.getAuditLog(CLASS, 'date', calibrationDate, 'calibrationKey', ndfName);
-            
-            m = ala_laurila_lab.entity.NDFMeasurement.empty(0, numel(log));
-            for i = 1 : numel(log)
-                m(i) = obj.getMeasurement(CLASS, log(i).calibrationId);
+            if nargin < 3
+                log = obj.getAuditLog(CLASS, 'calibrationKey', ndfName);
+            else
+                log = obj.getAuditLog(CLASS, 'date', calibrationDate, 'calibrationKey', ndfName);
             end
+            m = obj.getMeasurement(CLASS, log);
         end
         
         function date = getLastCalibrationDate(obj, class, key)
@@ -208,9 +212,10 @@ classdef CalibrationService < handle & mdepin.Bean
         end
         
         function log = getAuditLog(obj, class, varargin)
+            
             ip = inputParser;
             ip.KeepUnmatched = true;
-            ip.addParameter('date', [], @(x)ischar(x));
+            ip.addParameter('date', [], @(x) ischar(x));
             ip.addParameter('calibrationKey', [],  @(x)ischar(x));
             
             ip.parse(varargin{:});
@@ -255,14 +260,18 @@ classdef CalibrationService < handle & mdepin.Bean
             obj.logManager.persist(auditLog);
         end
         
-        function measurement = getMeasurement(obj, entity, id)
+        function measurements = getMeasurement(obj, entity, auditLog)
+            measurements = [];
             
-            measurement = entity;
-            if ischar(entity)
-                constructor = str2func(entity);
-                measurement = constructor(id);
+            for i = 1 : numel(auditLog)
+               m = entity;
+               if ischar(entity)
+                   constructor = str2func(entity);
+                   m = constructor(auditLog(i).calibrationId);
+               end
+               m = obj.dataManager.find(m);
+               measurements = [m, measurements]; %#ok
             end
-            measurement = obj.dataManager.find(measurement);
         end
     end
 end
