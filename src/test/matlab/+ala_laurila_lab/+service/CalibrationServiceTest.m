@@ -194,5 +194,32 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
             actual =  obj.verifyWarning(handle, 'stimuli:notfound');
             obj.verifyEqual(actual.stimulsDuration, '5000ms');
         end
+        
+        function testGetMeasurement(obj)
+            expectedLastCalibrationDate = '15-Sep-2016';
+            
+            m = obj.calibrationService.getIntensityMeasurement('Blue');
+            obj.verifyEqual(length(m), 41);
+            obj.verifyEqual(m(end).calibrationDate, expectedLastCalibrationDate);
+        end
+        
+        function testGetAuditLog(obj)
+            log = obj.calibrationService.getAuditLog('ala_laurila_lab.entity.IntensityMeasurement');
+            dateChar = {log(:).calibrationDate};
+            obj.verifyTrue(issorted(datenum(dateChar)));
+
+            handler = @()obj.calibrationService.getAuditLog('unknown');
+            obj.verifyError(handler, 'query:tableempty'); 
+
+            % compare date
+            expectedLastCalibrationDate = '15-Sep-2016';            
+            log = obj.calibrationService.getAuditLog('ala_laurila_lab.entity.IntensityMeasurement', 'date', expectedLastCalibrationDate);
+            obj.verifyNumElements(log, 1);
+            obj.verifyEqual(log.calibrationDate, expectedLastCalibrationDate);
+
+            % compare calibrationKey
+            log = obj.calibrationService.getAuditLog('ala_laurila_lab.entity.IntensityMeasurement', 'calibrationKey', 'Blue');
+            obj.verifyEqual(log(end).calibrationKey, 'Blue');
+        end
     end
 end

@@ -238,6 +238,8 @@ classdef CalibrationService < handle & mdepin.Bean
             if isempty(log)
                 error('query:tableempty', 'No data found')
             end
+            [~, indices] = sort(datenum({log(:).calibrationDate}));
+            log = log(indices);
         end
     end
     
@@ -270,7 +272,7 @@ classdef CalibrationService < handle & mdepin.Bean
                    m = constructor(auditLog(i).calibrationId);
                end
                m = obj.dataManager.find(m);
-               measurements = [m, measurements]; %#ok
+               measurements = [measurements, m]; %#ok
             end
         end
     end
