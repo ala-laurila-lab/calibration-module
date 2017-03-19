@@ -56,11 +56,20 @@ classdef LinearityMeasurement < ala_laurila_lab.entity.Measurement
             f = obj.flux;
         end
         
-        function flux = getFluxByInput(obj, input)
+        function flux = getFluxByInput(obj, input, varagin)
             import ala_laurila_lab.util.*;
             
+            ip = inputParser;
+            ip.KeepUnmatched = true;
+            ip.addParameter('normalized', false, @(x) islogical(x));
+            normalized = ip.Results.normalized;
+
             [f, i] = obj.getFluxAndInput();
             flux = interp1(f, i, input);
+
+            if normalized
+                flux = flux / interp1(f, i, obj.referenceInput);
+            end
         end
         
         function error = getError(obj, old)

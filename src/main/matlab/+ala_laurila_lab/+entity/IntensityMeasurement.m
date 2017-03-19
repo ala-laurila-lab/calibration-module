@@ -19,7 +19,7 @@ classdef IntensityMeasurement < ala_laurila_lab.entity.Measurement
     end
     
     properties(Access = private)
-        ledArea
+        stimulusArea
     end
     
     properties(Constant)
@@ -33,10 +33,10 @@ classdef IntensityMeasurement < ala_laurila_lab.entity.Measurement
             obj.ledType = ledType;
         end
         
-        function area = getLedArea(obj)
+        function area = getStimulsArea(obj)
             
-            if ~ isempty(obj.ledArea)
-                area = obj.ledArea;
+            if ~ isempty(obj.stimulusArea)
+                area = obj.stimulusArea;
                 return
             end
             
@@ -59,6 +59,10 @@ classdef IntensityMeasurement < ala_laurila_lab.entity.Measurement
                 error('intensity:ledInput:notfound', 'Intensity not found for given reference input');
             end
             power = obj.powers(i) * obj.powerExponent(i);
+        end
+
+        function p = getPowerPerUnitArea(obj)
+            p = obj.getPowerDensity(obj.referenceInput) / obj.getStimulsArea();
         end
         
         function error = getError(obj, old)
