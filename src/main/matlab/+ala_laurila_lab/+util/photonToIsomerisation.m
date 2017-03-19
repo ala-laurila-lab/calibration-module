@@ -1,4 +1,4 @@
-function isomerization_rate_sum = intensity2Rstar(power_spectrum, lambda, lambda_max, photoreceptor_area)
+function isomerization_rate_sum = photonToIsomerisation(power_spectrum, lambda, lambda_max, photoreceptor_area)
 % isomerization_rate calculates photoisomerization rate
 %
 %   power_spectrum
