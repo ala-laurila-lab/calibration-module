@@ -19,18 +19,26 @@ service = mdepin.createApplication(config, 'service');
 i = service.getIntensityMeasurement('Blue');
 powerPerUnitArea = i(end).getPowerPerUnitArea();
 spectrum = service.getSpectralMeasurement('blue', 'led');
-linearity = service.getLinearityByStimulsDuration(20, 'BlueLed');
+linearity = service.getLinearityByStimulsDuration(5000, 'BlueLed');
 powerSpectrumPerArea = spectrum.getNormalizedPowerSpectrum() * powerPerUnitArea;
 
 rstarPerSecond = util.photonToIsomerisation(powerSpectrumPerArea, spectrum.wavelength, LAMDA_MAX, ROD_PHOTORECEPTOR_AREA);
 
-ndf = service.getNDFMeasurement('A4B');
-fluxForLed = linearity.getFluxByInput(1, 'normalized', true);
-trans =  10^(-ndf(end).opticalDensity);
+ndf2= service.getNDFMeasurement('A4B');
+ndf3 = service.getNDFMeasurement('A1A');
+trans =  10^(-(ndf2(end).opticalDensity + ndf3(end).opticalDensity));
+% 
+% for voltage = [115, 234, 363, 501, 647, 801, 969, 1141, 1316, 1502, 2525, 3716, 5073, 6599, 8296]
+%     flux = linearity.getFluxByInput(voltage * 10^-3, 'normalized', true);
+%     rstar = flux * rstarPerSecond * trans;    
+%     disp([num2str(rstar) '      ' num2str(voltage)]);
+% end
 
-isomerisation = @(isomerisationPerSecond) fluxForLed * isomerisationPerSecond * trans * 1000;
-rstar = isomerisation(rstarPerSecond)
-
+for voltage = [56.6532853243682, 90.9947797625159, 125.95670244329, 161.932053656434, 198.742115631752, 395.363673745042, 848.984144716212, 1372.9216466916]
+    flux = linearity.getFluxByInput(voltage * 10^-3, 'factorized', true);
+    rstar = flux * rstarPerSecond * trans;    
+    disp([num2str(rstar) '      ' num2str(voltage)]);
+end
 clear service;
 %% simple calculation
 close all;

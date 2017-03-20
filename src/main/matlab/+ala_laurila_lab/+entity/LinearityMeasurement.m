@@ -61,9 +61,9 @@ classdef LinearityMeasurement < ala_laurila_lab.entity.Measurement
             
             ip = inputParser;
             ip.KeepUnmatched = true;
-            ip.addParameter('normalized', false, @(x) islogical(x));
-            ip.parse();
-            normalized = ip.Results.normalized;
+            ip.addParameter('factorized', false, @(x) islogical(x));
+            ip.parse(varargin{:});
+            normalized = ip.Results.factorized;
 
             [f, i] = obj.getFluxAndInput();
             flux = interp1(i, f, input);
