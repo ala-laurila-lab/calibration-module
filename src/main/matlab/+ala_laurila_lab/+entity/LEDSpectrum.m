@@ -24,7 +24,8 @@ classdef LEDSpectrum  < ala_laurila_lab.entity.SpectralMeasurement
         end
         
         function spectrum = getNormalizedPowerSpectrum(obj)
-            spectrum = getNormalizedPowerSpectrum@ala_laurila_lab.entity.SpectralMeasurement(obj, obj.reference, 'v');
+            field = strcat('powerFor', num2str(obj.referenceInput), 'v');
+            spectrum = getNormalizedPowerSpectrum@ala_laurila_lab.entity.SpectralMeasurement(obj, field);
         end
         
     end

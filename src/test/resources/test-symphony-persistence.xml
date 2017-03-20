@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1"
-	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence persistence_2_1.xsd">
-
-	<persistence-unit name="patch-rig-data">
+             xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence persistence_2_1.xsd">
+    
+	<persistence-unit name="test-rig-data">
 		<mapping-file>test-calibration-orm.xml</mapping-file>
 		<provider>mpa.h5.H5MatlabProvider</provider>
 		<class>ala_laurila_lab.entity.IntensityMeasurement</class>
@@ -20,7 +20,7 @@
 		</properties>
 	</persistence-unit>
 
-	<persistence-unit name="patch-rig-log">
+	<persistence-unit name="test-rig-log">
 		<mapping-file>test-calibration-orm.xml</mapping-file>
 		<provider>mpa.mat.SimpleMatlabProvider</provider>
 		<class>ala_laurila_lab.entity.AuditLog</class>

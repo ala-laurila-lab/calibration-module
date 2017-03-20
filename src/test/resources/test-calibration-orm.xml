@@ -55,7 +55,7 @@
             </id>
             <basic name="calibrationDate" attribute-type="string" />
             <basic name="note" attribute-type="string" />
-            
+            <basic name="stimulsSize" attribute-type="double" />
             <basic name="protocol" attribute-type="string" />
             <basic name="ledType" attribute-type="string" />
             <basic name="stimulsDuration" attribute-type="string" />

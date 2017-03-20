@@ -35,8 +35,8 @@ classdef CalibrationServiceTest < matlab.unittest.TestCase
             function instance = createInstance()
                 config = struct();
                 config.service.class = 'ala_laurila_lab.service.CalibrationService';
-                config.service.dataPersistence = 'patch-rig-data';
-                config.service.logPersistence = 'patch-rig-log';
+                config.service.dataPersistence = 'test-rig-data';
+                config.service.logPersistence = 'test-rig-log';
                 config.service.persistenceXml = which('test-symphony-persistence.xml');
                 instance = mdepin.createApplication(config, 'service');
             end

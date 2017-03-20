@@ -18,6 +18,8 @@ classdef Measurement < handle
             
             if hasString('milli')
                 e = 1e-3;
+            elseif hasString('micro')
+                e = 1e-6;
             elseif hasString('macro')
                 e = 1e-9;
             elseif hasString('nano')
