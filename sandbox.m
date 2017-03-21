@@ -77,10 +77,10 @@ powerSpectrumPerArea = @(powerPerUnitArea) spectrum.getNormalizedPowerSpectrum()
 rstarPerSecond = @(powerPerUnitArea) util.photonToIsomerisation(powerSpectrumPerArea(powerPerUnitArea), spectrum.wavelength, LAMDA_MAX, ROD_PHOTORECEPTOR_AREA);
 
 linearity = loadjson('src\test\resources\projector-linearity.json');
+
 fprintf('| Ledurrents \t | rstarPerSecond | ndf 1 | ndf 3 | ndf 5 |\n');
 fprintf('| --------- | --------- | --------- | --------- | --------- |\n')
 for i = 7 : numel(linearity.ledCurrents)
      rstar = rstarPerSecond(powerPerArea(linearity.powerInMilliWattFor(i)));  % in milli watts for 1000 micron and no ndf
      fprintf('| %s \t | %s | %s \t | %s \t | %s \t |\n', num2str(linearity.ledCurrents(i)), num2str(rstar) , num2str(rstar * 10^(-1)), num2str(rstar * 10^(-3)), num2str(rstar * 10^(-5)));
 end
- 
