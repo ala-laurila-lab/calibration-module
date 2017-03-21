@@ -1,6 +1,7 @@
 %% Ignore below lines of code, Go to next section please
 
 tbUseProject('calibration-module');
+%%
 
 import ala_laurila_lab.*;
 path = which('test-symphony-persistence.xml');
@@ -34,13 +35,13 @@ rstarPerSecond = util.photonToIsomerisation(powerSpectrumPerArea, spectrum.wavel
 
 % get the transmitance value from ndf
 
-ndf2 = service.getNDFMeasurement('A4B');
-ndf3 = service.getNDFMeasurement('A1A');
-trans = 10^(-(ndf2(end).opticalDensity + ndf3(end).opticalDensity));
+ndf4 = service.getNDFMeasurement('A4A');
+ndf2 = service.getNDFMeasurement('A2A');
+trans = 10^(-(ndf2(end).opticalDensity + ndf4(end).opticalDensity));
 
 % sample r-star table for ndf 5
 
-disp('ndf A1A + A4B');
+disp('ndf A4A + A2A');
 disp('rstar       voltage')
 disp('------------------------')
 
@@ -55,17 +56,31 @@ clear service;
 %% simple calculation for projector
 
 close all;
-
+clc;
 import ala_laurila_lab.*;
 
 LAMDA_MAX = 497;                        % Toda et al. 1999
 ROD_PHOTORECEPTOR_AREA = 0.5 * 1e-12;   % um^2, collective area of rod (Murphy & Rieke (2011))
 
-spectrum = ala_laurila_lab.util.loadSpectralFile('src\test\resources\spectrum_aalto_rig', 'projector');
+spectrum = ala_laurila_lab.util.loadSpectralFile('src/test/resources/spectrum_aalto_rig', 'projector');
 semilogy(spectrum.wavelength, spectrum.getNormalizedPowerSpectrum());
 figure;
 plot(spectrum.wavelength, spectrum.getNormalizedPowerSpectrum())
-powerPerUnitArea = 0.15; % in watts for 1000 micron and led current of 100 and no ndf
-powerSpectrumPerArea = spectrum.getNormalizedPowerSpectrum() * powerPerUnitArea;
 
-rstarPerSecond = util.photonToIsomerisation(powerSpectrumPerArea, spectrum.wavelength, LAMDA_MAX, ROD_PHOTORECEPTOR_AREA)
+radius = 1000 * 10^-6/2;
+area = pi*(radius)^2; % of 1000 um diamater
+powerPerArea = @(power) power * 10^-3 / area;
+
+
+powerSpectrumPerArea = @(powerPerUnitArea) spectrum.getNormalizedPowerSpectrum() * powerPerUnitArea;
+
+rstarPerSecond = @(powerPerUnitArea) util.photonToIsomerisation(powerSpectrumPerArea(powerPerUnitArea), spectrum.wavelength, LAMDA_MAX, ROD_PHOTORECEPTOR_AREA);
+
+linearity = loadjson('src\test\resources\projector-linearity.json');
+fprintf('| Ledurrents \t | rstarPerSecond | ndf 1 | ndf 3 | ndf 5 |\n');
+fprintf('| --------- | --------- | --------- | --------- | --------- |\n')
+for i = 7 : numel(linearity.ledCurrents)
+     rstar = rstarPerSecond(powerPerArea(linearity.powerInMilliWattFor(i)));  % in milli watts for 1000 micron and no ndf
+     fprintf('| %s \t | %s | %s \t | %s \t | %s \t |\n', num2str(linearity.ledCurrents(i)), num2str(rstar) , num2str(rstar * 10^(-1)), num2str(rstar * 10^(-3)), num2str(rstar * 10^(-5)));
+end
+ 

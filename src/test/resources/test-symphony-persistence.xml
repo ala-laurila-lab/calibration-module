@@ -13,7 +13,7 @@
 		<class>ala_laurila_lab.entity.NDFMeasurement</class>
 		<properties>
 			<property name="local-path"
-				value="fixtures\test-calibration-module.h5" />
+				value="fixtures/test-calibration-module.h5" />
 			<property name="remote-path" value="" />
 			<property name="create-mode" value="true" />
 			<property name="use-cache" value="false" />
@@ -26,7 +26,7 @@
 		<class>ala_laurila_lab.entity.AuditLog</class>
 		<properties>
 			<property name="local-path"
-				value="fixtures\" />
+				value="fixtures/" />
 			<property name="remote-path" value="" />
 			<property name="create-mode" value="true" />
 			<property name="use-cache" value="false" />
