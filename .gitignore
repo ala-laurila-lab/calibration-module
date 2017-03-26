@@ -14,4 +14,5 @@ target/
 *.log
 logs/
 fixtures/**
+*/.ipynb_checkpoints/*.ipynb
 .ipynb_checkpoints/sandbox-checkpoint.ipynb
