@@ -11,7 +11,8 @@ classdef IntensityMeasurement < ala_laurila_lab.entity.Measurement
         diameterExponent
         stageFocus
         stageFocusExponent
-        % Table
+    end
+    properties
         ledInput
         ledInputExponent
         powers

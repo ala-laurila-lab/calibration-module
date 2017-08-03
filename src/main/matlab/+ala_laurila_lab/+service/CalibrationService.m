@@ -32,8 +32,12 @@ classdef CalibrationService < handle & mdepin.Bean
         end
 
         function delete(obj)
-            obj.dataManager.close();
-            obj.logManager.close();
+            if ~ isempty(obj.dataManager)
+                obj.dataManager.close();
+            end
+            if ~ isempty(obj.dataManager)
+                obj.logManager.close();
+            end
             obj.dataManager = [];
             obj.logManager = [];
         end
