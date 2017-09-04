@@ -1,4 +1,4 @@
-[![Build Status](http://build.nbe.aalto.fi:8080/buildStatus/icon?job=testCalibrationModule)](http://build.nbe.aalto.fi:8080/job/testCalibrationModule/)
+[![Build Status](https://build.nbe.aalto.fi/buildStatus/icon?job=testCalibrationModule)](https://build.nbe.aalto.fi/job/testCalibrationModule/)
 
 # Calibration Module Ala-Laurila Lab
 
