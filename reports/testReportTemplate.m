@@ -56,7 +56,7 @@ linearityValues = linearityValues - nanmean(linearityValues(indLower6));
 linearityValues(indLower6) = 0; 
 
 % scale linearity to 1 at the measurement value (100LED current), 
-linearityValues = linearityValues/linearityValues(linearity.ledCurrents == 100);
+linearityValues = linearityValues/linearityValues(linearity.ledCurrents == LED_CURRENT);
 
 %% Prepare rstar table
 
