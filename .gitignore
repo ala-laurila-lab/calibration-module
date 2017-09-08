@@ -13,6 +13,11 @@ target/
 # Logs
 *.log
 logs/
+
+# Test
 fixtures/**
+*.tap
+
+# Reports
 */.ipynb_checkpoints/*.ipynb
 .ipynb_checkpoints/sandbox-checkpoint.ipynb
