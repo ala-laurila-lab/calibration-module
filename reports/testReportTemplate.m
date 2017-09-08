@@ -12,8 +12,8 @@ import ala_laurila_lab.*;
 % LED power calibration
 
 LED_CURRENT  = 100;
-SPOT_DIAMETER_IN_MICRO_METER = 1000;
-POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT = 0.16935;
+SPOT_DIAMETER_IN_MICRO_METER = 500;
+POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT = 0.320;
 
 % Ndf specif inputs (If changed)
 % If you know the value of ndf, just plugin in the values here (Anna's way)
