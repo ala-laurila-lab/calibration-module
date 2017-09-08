@@ -26,7 +26,8 @@ ND(4)=6.4;
 ND(5)=7.49;
 ND(6)=8.88;
 
-rstar = rstarPerSecond(powerPerArea(0.16935));
+%power we measure with optometer in mW
+rstar = rstarPerSecond(powerPerArea(0.320));
 NDstring=[];filler=[];fprintstring=[];
 for i=2:length(ND)
     rstar_ndf(i) = rstar * 10^(-ND(i));
@@ -45,11 +46,19 @@ indLower6=find(linearity.parameters.curBlueLED<6);%all the values for which proj
 linearityValues=linearityValues-nanmean(linearityValues(indLower6));
 linearityValues(indLower6)=0;%and set those values below 6 to 0
 
+% scale linearity to 1 at the measurement value (100LED current), 
+linearityValues = linearityValues/linearityValues(find(linearity.ledCurrents == 100));
+
 fprintf(['| Ledurrents \t | rstarPerSecond |',NDstring,'\n']);
 fprintf(['| --------- | --------- |',filler ,'\n'])
 
 for i = 1 : numel(linearity.ledCurrents)
-    rstar = rstarPerSecond(powerPerArea(linearityValues(i)));  % in milli watts for 1000 micron and no ndf
+    % something is wrong here!
+    rstarFinal = rstar*linearityValues(i); 
+%     rstar = rstarPerSecond(powerPerArea(linearityValues(i)));  % in milli watts for 500 micron, 100 LED current and no ndf
 %     rstar = round(rstar, 2);
-    fprintf(['| %.0f \t | %.0f |',fprintstring,'\n'], [linearity.ledCurrents(i), rstar , rstar.*10.^(-ND(2:end))]);
+    fprintf(['| %.0f \t | %.0f |',fprintstring,'\n'], [linearity.ledCurrents(i), rstarFinal , rstarFinal.*10.^(-ND(2:end))]);
+
+allRstar(i,:)=[linearity.ledCurrents(i), rstarFinal , rstarFinal.*10.^(-ND(2:end))];
 end
+% save('RstarTable_20170907.mat','allRstar')
