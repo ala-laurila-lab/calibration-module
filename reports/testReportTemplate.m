@@ -80,6 +80,6 @@ text = [datestr(date) ':' getenv('username')...
     ' (mw) having spot diameter ' num2str(SPOT_DIAMETER_IN_MICRO_METER)...
     ' (um). The ndf values in the filter wheel order ' num2str(NDF_IN_FILTER_WHEEL_ORDER) ];
 
-fid = fopen('reports/testTeportTemplate.txt', 'a+');
+fid = fopen('reports/reportLogs.txt', 'a+');
 fprintf(fid, '%s\n', text);
 fclose(fid);
