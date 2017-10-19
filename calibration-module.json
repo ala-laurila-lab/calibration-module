@@ -20,7 +20,7 @@
 		"hook": "",
 		"importance": "",
 		"localHookTemplate": "",
-		"name": "matlab-persistence",
+		"name": "MatlabPersistence",
 		"pathPlacement": "append",
 		"requirementHook": "",
 		"subfolder": "",
