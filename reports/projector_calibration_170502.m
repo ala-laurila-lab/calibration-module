@@ -21,7 +21,7 @@ plot(spectrum.wavelength, spectrum.getNormalizedPowerSpectrum())
 
 ND(1)=0;
 ND(2)=3.58;
-ND(3)=4.49;
+ND(3)=4.49;%%!!! that is a typo. It should be 4.94! Used these light calibrations for all experiments until 20171107!
 ND(4)=6.4;
 ND(5)=7.49;
 ND(6)=8.88;
