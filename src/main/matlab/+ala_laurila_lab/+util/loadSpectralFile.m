@@ -49,24 +49,26 @@ end
             
             fid = fopen(fullfile(filePath, directory(i).name), 'r');
             
-            strings = strsplit(directory(i).name, '_');
-            size = str2double(strings{2});
-            pixel = strings{3};
-            ledCurrent = str2double(strings{4});
-            
-            lines = textscan(fid, '%s %s', 'Delimiter', '\t');
-            col1 = lines{1, 1};
-            col2 = lines{1, 2};
-            
-            metaInformation = col1(1: 17); %#ok
-            e.wavelength = str2double(col1(18 : end - 1)) * 1e-2;
-            e.addPowerSpectrum(ledCurrent, size, pixel, str2double(col2(18 : end -1 )));
-            e.referenceInput = 12;
-            e.referenceSize = 500;
-            
-            date = strings{6};
-            date = [date(5:end -4) '/' date(3:4) '/20' date(1:2)];
-            e.calibrationDate = datestr(datenum(date, 'dd/mm/yyyy'));
+            if ~strcmp(directory(i).name(1), '.')
+              strings = strsplit(directory(i).name, '_');
+              size = str2double(strings{2});
+              pixel = strings{3};
+              ledCurrent = str2double(strings{4});
+
+              lines = textscan(fid, '%s %s', 'Delimiter', '\t');
+              col1 = lines{1, 1};
+              col2 = lines{1, 2};
+
+              metaInformation = col1(1: 17); %#ok
+              e.wavelength = str2double(col1(18 : end - 1)) * 1e-2;
+              e.addPowerSpectrum(ledCurrent, size, pixel, str2double(col2(18 : end -1 )));
+              e.referenceInput = 25;
+              e.referenceSize = 500;
+
+              date = strings{6};
+              date = [date(5:end -4) '/' date(3:4) '/20' date(1:2)];
+              e.calibrationDate = datestr(datenum(date, 'dd/mm/yyyy'));
+            end
         end
         
     end
