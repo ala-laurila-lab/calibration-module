@@ -6,6 +6,7 @@ classdef ProjectorSpectrum  < ala_laurila_lab.entity.SpectralMeasurement
         powerFor12LedCurrent250um
         powerFor12LedCurrent500um
         powerFor25LedCurrent500um
+        powerFor100LedCurrent500um
         referenceSize
     end
     

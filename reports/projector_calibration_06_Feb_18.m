@@ -13,7 +13,7 @@ import ala_laurila_lab.*;
 
 LED_CURRENT  = 100;
 SPOT_DIAMETER_IN_MICRO_METER = 500;
-POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT = 0.420;
+POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT = 0.270;
 
 % Ndf specif inputs (If changed)
 % If you know the value of ndf, just plugin in the values here (Anna's way)
@@ -32,7 +32,7 @@ area = pi*(radius)^2;
 % Test spectrum measured long back ! (check the file name for its date)
 % It applies only to Lightcrafter projector present in aalto
 
-spectrum = ala_laurila_lab.util.loadSpectralFile('src/test/resources/spectrum_aalto_rig', 'projector');
+spectrum = ala_laurila_lab.util.loadSpectralFile('src/test/resources/spectrum_aalto_rig_2018/', 'projector');
 
 powerPerArea = @(power) power * 10^-3 / area;
 powerSpectrumPerArea = @(powerPerUnitArea) spectrum.getNormalizedPowerSpectrum() * powerPerUnitArea;
@@ -71,6 +71,7 @@ rstarTable = array2table(allRstar, 'VariableNames', {'Ledurrents', 'rstarPerSeco
 fname = ['rstar-table-' date];
 writetable(rstarTable, ['reports/' fname '.csv'], 'filetype', 'text');
 writetable(rstarTable, ['reports/' fname '.xls'], 'filetype', 'spreadsheet');
+save(['reports/' fname '.mat'], 'allRstar');
 
 %% Log file
 
