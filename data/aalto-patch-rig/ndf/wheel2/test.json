@@ -1,0 +1,15 @@
+{
+	"ndfName": "neutralDensityFilterWheel2",
+	"ledInput": [10,20,50,200],
+	"ledInputExponent": [1,1,1,1],
+	"powers": [121,12,121,1212],
+	"powerExponent": [0.001,0.001,0.001,0.001],
+	"powerWithNdf": [12,12,12,12],
+	"powerWithNdfExponent": [0.001,0.001,0.001,0.001],
+	"opticalDensity": 1.002882406,
+	"ERROR_MARGIN_PERCENT": 5,
+	"id": "neutralDensityFilterWheel2",
+	"calibrationDate": null,
+	"note": null,
+	"referenceInput": null
+}
