@@ -1,0 +1,15 @@
+{
+	"ndfName": "wheel1ndf1",
+	"ledInput": [10,20,50,200],
+	"ledInputExponent": [1,1,1,1],
+	"powers": [6.2,66.4,0.222,0.731],
+	"powerExponent": [1e-06,0.001,0.001,0.001],
+	"powerWithNdf": [0.75,7.765,26,87.7],
+	"powerWithNdfExponent": [1e-06,1e-06,1e-06,1e-06],
+	"opticalDensity": 1.675413614,
+	"ERROR_MARGIN_PERCENT": 5,
+	"id": "wheel1ndf1",
+	"calibrationDate": "04-Jun-2021",
+	"note": null,
+	"referenceInput": null
+}
