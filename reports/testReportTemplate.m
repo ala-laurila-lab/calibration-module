@@ -44,7 +44,13 @@ rstar = rstarPerSecond(powerPerArea(POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_
 
 linearity = loadjson('src/test/resources/projector-linearity.json');
 linearityValues = linearity.powerInMilliWattFor;
+%% 
 
+linearity = loadjson('src/test/resources/projector-linearity.json');
+linearityValues = linearity.meanFlux;
+linearity.ledCurrents = linearity.ledInput;
+
+%%
 % linearity should not be negative. but in measurements first entries can be
 % lower than 0 (calibration issue of optometer). 
 
