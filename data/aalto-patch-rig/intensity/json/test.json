@@ -1,0 +1,10 @@
+{
+	"device": "LightCrafter Stage@localhost",
+	"ledType": "Blue led",
+	"spotSize": "500 um",
+	"ledCurrent": "100",
+	"calibratedBy": "sat",
+	"calibrationDate": "04-Jun-2021 22:20:11",
+	"power": "1",
+	"powerExponent": 1e-06
+}

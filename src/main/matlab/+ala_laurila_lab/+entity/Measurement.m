@@ -5,6 +5,7 @@ classdef Measurement < handle
         calibrationDate
         note
         referenceInput
+        user
     end
     
     methods
