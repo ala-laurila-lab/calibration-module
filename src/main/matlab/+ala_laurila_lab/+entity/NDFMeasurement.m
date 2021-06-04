@@ -2,6 +2,7 @@ classdef NDFMeasurement < ala_laurila_lab.entity.Measurement
     
     properties
         ndfName
+        spotDiameter
         % table
         ledInput
         ledInputExponent
