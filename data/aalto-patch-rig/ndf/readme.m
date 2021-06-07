@@ -10,14 +10,14 @@ ndfMap = containers.Map();
 
 for i = 3 : length(wheel1)
     data{end + 1} = loadjson(fullfile(location, 'wheel1', wheel1(i).name));
-    ndfMap = ndf_readme_util.addtoMap(ndfMap, data{end});
+    ndfMap = ndf_data_util.addtoMap(ndfMap, data{end});
 end
 
 wheel2 = dir(fullfile(location, 'wheel2'));
 
 for i = 3 : length(wheel2)
     data{end + 1} = loadjson(fullfile(location, 'wheel2', wheel2(i).name));
-    ndfMap = ndf_readme_util.addtoMap(ndfMap, data{end});
+    ndfMap = ndf_data_util.addtoMap(ndfMap, data{end});
 end
 
 %% Table ndf wise

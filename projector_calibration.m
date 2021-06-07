@@ -10,12 +10,17 @@ LED_NON_LINEARITY_FILE_NAME = 'x04_Jun_202115_17_34-non-linearity.json';
 
 
 dataLocation = fileparts(which('aalto_rig_calibration_data_readme'));
-%%
-% LED power calibration
-LED_CURRENT  = 100;
+intensity = loadjson(fullfile(dataLocation, 'intensity', 'latest.json'))
+odTable = ndf_data_util.getOpticalDensity(dataLocation)
+
+%% LED power 
+% 
+LED_CURRENT = 100;
 SPOT_DIAMETER_IN_MICRO_METER = 500; % in micro meter
 POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT = 0.288; % mw
 
+%% NDF optical density 
+%
 % Ndf specif inputs (If changed)
 % Plug in OD values for all NDFs here
 NDF_IN_FILTER_WHEEL_1_ORDER = [0.93, 2.03, 3.30, 4.13, 0, 0];
@@ -23,10 +28,9 @@ NDF_IN_FILTER_WHEEL_2_ORDER = [0, 0, 3.30, 4.62, 0, 0];
 
 
 % combinations of ndf position
-NDF_IN_FILTER_WHEEL_ORDER = NDF_IN_FILTER_WHEEL_1_ORDER + NDF_IN_FILTER_WHEEL_2_ORDER(4);
-
-ndfPosition = {'2_4', '3_4', '4_4', '4'};
-ndfs = NDF_IN_FILTER_WHEEL_ORDER(2:end-1);
+ndfPosition = {'4_4', '3_4', '2_4', '1_4', '5x0_4', '5x0_3'};
+NDF_IN_FILTER_WHEEL_ORDER =  [NDF_IN_FILTER_WHEEL_1_ORDER(4:-1:1) + NDF_IN_FILTER_WHEEL_2_ORDER(4), NDF_IN_FILTER_WHEEL_2_ORDER(4), NDF_IN_FILTER_WHEEL_2_ORDER(3)];
+ndfs = NDF_IN_FILTER_WHEEL_ORDER;
 
 
 % Mouse specfic parameters
@@ -67,19 +71,20 @@ end
 ndfPositions = cellfun(@(i) strcat('ndf_', i) , ndfPosition, 'UniformOutput', false);
 rstarTable = array2table(allRstar, 'VariableNames', {'Ledurrents', 'rstarPerSecond', ndfPositions{:}}) %#ok
 
-fname = ['rstar-table-' date];
-writetable(rstarTable, ['reports/' fname '.csv'], 'filetype', 'text');
-writetable(rstarTable, ['reports/' fname '.xls'], 'filetype', 'spreadsheet');
-save(['reports/' fname '.mat'], 'allRstar');
+fname = 'rstar-table';
+writetable(rstarTable, [dataLocation filesep fname '.csv'], 'filetype', 'text');
+writetable(rstarTable, [dataLocation filesep fname '-' date '.xls'], 'filetype', 'spreadsheet');
+save([dataLocation filesep fname '-' date  '.mat'], 'allRstar');
 
 %% Log file
-
+ndfpositionText = arrayfun(@(i) strcat(i, ' ,'), ndfPositions );
 text = [datestr(date) ':' getenv('username')...
     ' The measured power for led ' num2str(LED_CURRENT)...
     ' for ' num2str(POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT)...
     ' (mw) having spot diameter ' num2str(SPOT_DIAMETER_IN_MICRO_METER)...
-    ' (um). The ndf values in the filter wheel order ' num2str(NDF_IN_FILTER_WHEEL_ORDER) ];
+    ' (um). The ndf values in the filter wheel order  ' [ndfpositionText{:}] ' : '  num2str(NDF_IN_FILTER_WHEEL_ORDER) ];
 
-fid = fopen('reports/reportLogs.txt', 'a+');
+fid = fopen([dataLocation filesep 'reportLogs.txt'], 'a+');
 fprintf(fid, '%s\n', text);
 fclose(fid);
+
