@@ -8,6 +8,7 @@
 *.mlappinstall
 *.h5
 *.mat
+*.xls
 target/
 
 # Logs
