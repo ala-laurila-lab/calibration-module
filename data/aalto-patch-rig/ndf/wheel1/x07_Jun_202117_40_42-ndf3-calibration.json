@@ -1,0 +1,19 @@
+{
+	"ndfName": "wheel1ndf3",
+	"wheelId": 1,
+	"ndfId": 3,
+	"spotDiameter": 500,
+	"ledInput": [100,100,100],
+	"ledInputExponent": [1,1,1],
+	"powers": [288,288,288],
+	"powerExponent": [1e-06,1e-06,1e-06],
+	"powerWithNdf": [0.143,0.143,0.143],
+	"powerWithNdfExponent": [1e-06,1e-06,1e-06],
+	"opticalDensity": 3.30405645,
+	"ERROR_MARGIN_PERCENT": 5,
+	"id": "wheel1ndf3",
+	"calibrationDate": "07-Jun-2021",
+	"note": null,
+	"referenceInput": null,
+	"user": null
+}

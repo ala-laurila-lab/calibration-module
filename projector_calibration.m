@@ -13,6 +13,7 @@ dataLocation = fileparts(which('aalto_rig_calibration_data_readme'));
 intensity = loadjson(fullfile(dataLocation, 'intensity', 'latest.json'))
 odTable = ndf_data_util.getOpticalDensity(dataLocation)
 
+
 %% LED power 
 % 
 LED_CURRENT = 100;
@@ -26,6 +27,7 @@ POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT = 0.288; % mw
 NDF_IN_FILTER_WHEEL_1_ORDER = [0.93, 2.03, 3.30, 4.13, 0, 0];
 NDF_IN_FILTER_WHEEL_2_ORDER = [0, 0, 3.30, 4.62, 0, 0];
 
+%% Rstar table computation
 
 % combinations of ndf position
 ndfPosition = {'4_4', '3_4', '2_4', '1_4', '5x0_4', '5x0_3'};
@@ -36,8 +38,6 @@ ndfs = NDF_IN_FILTER_WHEEL_ORDER;
 % Mouse specfic parameters
 LAMDA_MAX = 497;                            % Toda et al. 1999
 ROD_PHOTORECEPTOR_AREA = 0.63 * 1e-12;      % um^2, collective area of rod (Smeds et al., 2019)
-
-%%
 
 
 radius = SPOT_DIAMETER_IN_MICRO_METER * 10^-6/2;
@@ -53,7 +53,7 @@ rstarPerSecond = @(powerPerUnitArea) util.photonToIsomerisation(powerSpectrumPer
 import ala_laurila_lab.*;
 rstar = rstarPerSecond(powerPerArea(POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT));
 
-%% Linearity Normalization
+% Linearity Normalization
 
 linearity = loadjson(fullfile(dataLocation, 'projector_led_nonlinearity', LED_NON_LINEARITY_FILE_NAME));
 linearityValues = linearity.measurements;
@@ -61,7 +61,7 @@ linearityValues = linearity.measurements;
 % scale linearity to 1 at the measurement value (100LED current),
 linearityValues = linearityValues/linearityValues(linearity.ledCurrent == LED_CURRENT);
 
-%% Prepare rstar table
+% Prepare rstar table
 
 for i = 1 : numel(linearity.ledCurrent)
     rstarFinal = rstar * linearityValues(i);
@@ -76,7 +76,7 @@ writetable(rstarTable, [dataLocation filesep fname '.csv'], 'filetype', 'text');
 writetable(rstarTable, [dataLocation filesep fname '-' date '.xls'], 'filetype', 'spreadsheet');
 save([dataLocation filesep fname '-' date  '.mat'], 'allRstar');
 
-%% Log file
+% Log file
 ndfpositionText = arrayfun(@(i) strcat(i, ' ,'), ndfPositions );
 text = [datestr(date) ':' getenv('username')...
     ' The measured power for led ' num2str(LED_CURRENT)...

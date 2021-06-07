@@ -27,12 +27,12 @@ end
 %
 
 % function handles
-variables = {'date', 'LedInput', 'powerWithNdf', 'PowerWithNdfExponent', 'powerWithoutNdf', 'powerWithoutNdfExponent'};
-toTable = @(d) table([d(:).calibrationDateArray]', [d(:).ledInput]', [d(:).powerWithNdf]', [d(:).powerWithNdfExponent]', [d(:).powers]', [d(:).powerExponent]', 'VariableNames', variables);
+variables = {'ndf', 'date', 'LedInput', 'powerWithNdf', 'PowerWithNdfExponent', 'powerWithoutNdf', 'powerWithoutNdfExponent'};
+toTable = @(d) table([d(:).ndf]', [d(:).calibrationDateArray]', [d(:).ledInput]', [d(:).powerWithNdf]', [d(:).powerWithNdfExponent]', [d(:).powers]', [d(:).powerExponent]', 'VariableNames', variables);
 
 % Display ndf table
-
-toTable(ndfMap('wheel1ndf1'))
+v = ndfMap.values;
+toTable( [v{:}])
 
 
 %% complete table

@@ -3,6 +3,8 @@ classdef NDFMeasurement < ala_laurila_lab.entity.Measurement
     properties
         ndfName
         spotDiameter
+        wheelId
+        ndfId
         % table
         ledInput
         ledInputExponent
