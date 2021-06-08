@@ -1,5 +1,5 @@
-close all; clear; clc;
-tbUseProject('calibration-module');
+
+% tbUseProject('calibration-module');
 import ala_laurila_lab.*;
 
 
