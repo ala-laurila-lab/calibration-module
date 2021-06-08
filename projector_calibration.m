@@ -6,7 +6,7 @@ import ala_laurila_lab.*;
 %% Data 
 
 SPECTRUM_DATA_FOLDER = '2019-05-06';
-LED_NON_LINEARITY_FILE_NAME = 'x04_Jun_202115_17_34-non-linearity.json';
+LED_NON_LINEARITY_FILE_NAME = 'x08_Jun_202115_45_56-non-linearity.json';
 
 
 dataLocation = fileparts(which('aalto_rig_calibration_data_readme'));
