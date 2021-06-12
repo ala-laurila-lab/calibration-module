@@ -15,16 +15,17 @@ The light calibration module provides a semi-automated tool to acquire and struc
 
 The user interface for calibrations are programmed using [symphony modules](https://github.com/ala-laurila-lab/data-acquisition/tree/master/src/main/matlab/%2Bala_laurila_lab/%2Bmodules). 
 
-### Intensity calibration
+### a) Intensity calibration
 
  Due to age-related changes in the light source, the absolute intensity it provides can fluctuate. The fluctuation is quantified by measuring the power output of the light source associated with a standard input to the light source (voltage or LED current) at regular intervals. If the difference to the previous measurement is not marginal (more than 3%), then the visual stimulation component of the setup is examined to ensure it still functions correctly before starting a new experiment. The newly developed Symphony Module; semi-automates the intensity calibration process. It saves the power output of a photometer UDT S470 flexOptometer (Gamma Scientific, "San Diego, CA", USA) and stores the information along with the calibration date and additional user information.
 
 1. Setup the optometer. 
 2. Open Symphony > Modules > Intensity calibration. 
 3. Select and run the calibration spot (500 um) symphony protocol with no neutral density filter present in optical path.
-4. Enter the power measured in optometer to Intensity calibration GUI, and save. Data is stored in dir `lib/calibration-module/data/aalto-patch-rig/intensity`. Run the readme.m to view the data
+4. Enter the power measured in optometer to Intensity calibration GUI, and save. Data is stored in dir `lib/calibration-module/data/aalto-patch-rig/intensity`. 
+5. (Optional) Run the readme.m to view the data
 
-### Led non linearity 
+### b) Led non linearity 
 The response of many light sources to its control input often does not follow a linear relation, especially at low driving intensities. Hence, it is important to measure and store the input/output relationship of the light source, in our case an LED. To this aim, the photometer measures the power output of the light source for a range of inputs to the light source.
 
 The user interface for calibration is customized from the Symphony protocol - Projector non linearity calibration. During calibration, the photometer's analog channel is connected to an analog input stream of the digitizer. The LED current is set before every epoch and the power measured from the photometer is stored.
@@ -33,7 +34,20 @@ The user interface for calibration is customized from the Symphony protocol - Pr
 2. Open Symphony > Protocols > Projector non linearity calibration. 
 3. Create a new experiment file to save raw data. 
 4. Click record.
-4. The output from optometer is measured, and saved as json file. Data is stored in dir `lib/calibration-module/data/aalto-patch-rig/projector_led_nonlinearity`. Run the readme.m to view the data
+4. The output from optometer is measured, and saved as json file. Data is stored in dir `lib/calibration-module/data/aalto-patch-rig/projector_led_nonlinearity`. 
+5. (Optional) Run the readme.m to view the data
+
+### c) Neutral density filter calibration
+
+To study the retina at a low light levels requires the attenuation of the incoming light from the light source. Neutral Density Filters (NDF) are designed to attenuate light by a specific factor, which is generally measured as optical density (OD). The OD value given by the manufacturer often contains error margins that are larger than what can be tolerated for the experiments planned with this setup. NDFs therefore require calibration measurements to calculate the actual OD value of the filters, when installed in the setup.
+
+The user interface provides the information required for calibrating the NDFs. It can be used for both manual and motorized filter wheels.
+
+1. Setup the optometer. 
+2. Select and run the calibration spot (500 um) symphony protocol with no neutral density filter present in optical path.
+3. Open Symphony > Modules > NDF calibration. 
+4. Select wheel, and ndf. Enter the power measured in optometer to NDF calibration GUI, and save. Data is stored in dir `lib/calibration-module/data/aalto-patch-rig/ndf_calibration`. 
+6. (Optional) Run the readme.m to view the data
 
 ## Synchronize data to github
 
@@ -45,6 +59,11 @@ git add data
 git commit -m 'Add calibration data'
 git push origin master
 ```
+
+### d) LED Spectrum
+
+The spectrum of the light source is another crucial component to quantify the amount of light presented to the tissue. It is measured using a spectrometer, and we use Spectrasuite (Optics 2010). The result of the measurement is stored in current github repo a part of the calibration information - `data/aalto-patch-rig/projector_spectrum`.  
+
 
 ## Compute R*/rod/second table
 
