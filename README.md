@@ -49,6 +49,10 @@ The user interface provides the information required for calibrating the NDFs. I
 4. Select wheel, and ndf. Enter the power measured in optometer to NDF calibration GUI, and save. Data is stored in dir `lib/calibration-module/data/aalto-patch-rig/ndf_calibration`. 
 6. (Optional) Run the readme.m to view the data
 
+### d) LED Spectrum
+
+The spectrum of the light source is another crucial component to quantify the amount of light presented to the tissue. It is measured using a spectrometer, and we use Spectrasuite (Optics 2010). The result of the measurement is stored in current github repo a part of the calibration information - `data/aalto-patch-rig/projector_spectrum`.  
+
 ## Synchronize data to github
 
 Open git shell 
@@ -59,10 +63,6 @@ git add data
 git commit -m 'Add calibration data'
 git push origin master
 ```
-
-### d) LED Spectrum
-
-The spectrum of the light source is another crucial component to quantify the amount of light presented to the tissue. It is measured using a spectrometer, and we use Spectrasuite (Optics 2010). The result of the measurement is stored in current github repo a part of the calibration information - `data/aalto-patch-rig/projector_spectrum`.  
 
 
 ## Compute R*/rod/second table
