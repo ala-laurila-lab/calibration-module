@@ -69,8 +69,6 @@ git push origin master
 
 As a best practice, follow [github pull request flow](https://guides.github.com/introduction/flow/) when generating R* table. It helps to do a quick manul review/check on changed R* values.
 
- ![image](https://user-images.githubusercontent.com/7013764/121772630-2eb79380-cb7f-11eb-828e-19fef61d5c6f.png)
-
 Script to generate rstar table is present in [projector_calibration.m](https://github.com/ala-laurila-lab/calibration-module/blob/master/projector_calibration.m). 
 [Manually verify and update calibration data](https://github.com/ala-laurila-lab/calibration-module/blob/master/projector_calibration.m#L6)
 1. Replace the right folder / file name for spectrum and linearity measurement.
