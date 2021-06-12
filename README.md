@@ -4,6 +4,13 @@ The light calibration module provides a user interface to quantify the propertie
 
 The light calibration module provides a semi-automated tool to acquire and structure the calibration measurements. It stores the calibration measurements from both spatially uniform and from structured stimulus sources such as LEDs or DLP projectors. The measurements include the stimulus intensity, light source nonlinearity, the spectrum of the light source and the attenuation factor of the neutral density filters. The calibration data file format is plain text json, and easily readable by any programming language.
 
+## Requirements
+
+- Matlab 2014a+
+- [ToolboxToolbox](https://github.com/ToolboxHub/ToolboxToolbox)
+- [symphony](http://symphony-das.github.io/) 
+- [symhpony extensions](https://github.com/ala-laurila-lab/data-acquisition)
+
 ## How to calibrate Aalto patch rig?
 
 The user interface for calibrations are programmed using [symphony modules](https://github.com/ala-laurila-lab/data-acquisition/tree/master/src/main/matlab/%2Bala_laurila_lab/%2Bmodules). 
@@ -15,9 +22,20 @@ The user interface for calibrations are programmed using [symphony modules](http
 1. Setup the optometer. 
 2. Open Symphony > Modules > Intensity calibration. 
 3. Select and run the calibration spot (500 um) symphony protocol with no neutral density filter present in optical path.
-4. Enter the power measured in optometer to Intensity calibration GUI, and save. Data is stored in dir `lib/calibration-module/data/aalto-patch-rig/intensity`. 
+4. Enter the power measured in optometer to Intensity calibration GUI, and save. Data is stored in dir `lib/calibration-module/data/aalto-patch-rig/intensity`. Run the readme.m to view the data
 
-### Synchronize data to github
+### Led non linearity 
+The response of many light sources to its control input often does not follow a linear relation, especially at low driving intensities. Hence, it is important to measure and store the input/output relationship of the light source, in our case an LED. To this aim, the photometer measures the power output of the light source for a range of inputs to the light source.
+
+The user interface for calibration is customized from the Symphony protocol - Projector non linearity calibration. During calibration, the photometer's analog channel is connected to an analog input stream of the digitizer. The LED current is set before every epoch and the power measured from the photometer is stored.
+
+1. Setup the optometer. Make sure that optometer out is connected to data acquisition board via BNC cable. 
+2. Open Symphony > Protocols > Projector non linearity calibration. 
+3. Create a new experiment file to save raw data. 
+4. Click record.
+4. The output from optometer is measured, and saved as json file. Data is stored in dir `lib/calibration-module/data/aalto-patch-rig/projector_led_nonlinearity`. Run the readme.m to view the data
+
+## Synchronize data to github
 
 Open git shell 
 
@@ -28,7 +46,7 @@ git commit -m 'Add calibration data'
 git push origin master
 ```
 
-### Compute R*/rod/second table
+## Compute R*/rod/second table
 
 As a best practice, follow [github pull request flow](https://guides.github.com/introduction/flow/) when generating R* table. It helps to do a quick manul review/check on changed R* values.
 
@@ -48,11 +66,6 @@ LED_NON_LINEARITY_FILE_NAME = 'x08_Jun_202115_45_56-non-linearity.json';
 
 > <b> Calculated rstar table will be used in common-control module of symphony to select the right ndf, and led current value for given R*/rod/second.  </b>
 
-
-## Requirements
-
-- Matlab 2015a+
-- [ToolboxToolbox](https://github.com/ToolboxHub/ToolboxToolbox)
 
 ## For Development
 
