@@ -61,6 +61,7 @@ Open git shell
 cd <matlab-path>/projects/data-acquisition/lib/calibration-module/
 git add data
 git commit -m 'Add calibration data'
+git pull origin master (if it opens the vim terminal, type ":wq")
 git push origin master
 ```
 
@@ -91,7 +92,7 @@ The project directory structure generally follows the [Maven Standard Directory 
 1. Download and install [ToolboxToolbox](https://github.com/ToolboxHub/ToolboxToolbox)
 2. Restart Matlab
 3. `git clone https://github.com/ala-laurila-lab/calibration-module.git` into `<userpath>\projects\calibration-module` folder 
-4. open the matlab command window and run `tbUseProject('calibration-module)`
+4. open the matlab command window and run `tbUseProject('calibration-module')`
 
 ### Matlab dependencies
     
