@@ -37,7 +37,7 @@ ndfs = NDF_IN_FILTER_WHEEL_ORDER;
 
 % Mouse specfic parameters
 LAMDA_MAX = 497;                            % Toda et al. 1999
-ROD_PHOTORECEPTOR_AREA = 0.63 * 1e-12;      % um^2, collective area of rod (Smeds et al., 2019)
+ROD_COLLECTING_AREA = 0.63 * 1e-12;      % um^2, rod collecting area of rod (Smeds et al., 2019)
 
 
 radius = SPOT_DIAMETER_IN_MICRO_METER * 10^-6/2;
@@ -48,7 +48,7 @@ spectrum = ala_laurila_lab.util.loadSpectralFile(fullfile(dataLocation, 'project
 
 powerPerArea = @(power) power * 10^-3 / area;
 powerSpectrumPerArea = @(powerPerUnitArea) spectrum.getNormalizedPowerSpectrum() * powerPerUnitArea;
-rstarPerSecond = @(powerPerUnitArea) util.photonToIsomerisation(powerSpectrumPerArea(powerPerUnitArea), spectrum.wavelength, LAMDA_MAX, ROD_PHOTORECEPTOR_AREA);
+rstarPerSecond = @(powerPerUnitArea) util.photonToIsomerisation(powerSpectrumPerArea(powerPerUnitArea), spectrum.wavelength, LAMDA_MAX, ROD_COLLECTING_AREA);
 
 import ala_laurila_lab.*;
 rstar = rstarPerSecond(powerPerArea(POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT));
