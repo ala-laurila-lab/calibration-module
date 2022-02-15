@@ -5,8 +5,8 @@ import ala_laurila_lab.*;
 
 %% Data 
 
-SPECTRUM_DATA_FOLDER = '2019-05-06';
-LED_NON_LINEARITY_FILE_NAME = 'x08_Jun_202115_45_56-non-linearity.json';
+SPECTRUM_DATA_FOLDER = '2021-07-23';
+LED_NON_LINEARITY_FILE_NAME = 'x07_Jul_202115_31_21-non-linearity.json';
 
 
 dataLocation = fileparts(which('aalto_rig_calibration_data_readme'));
@@ -18,7 +18,7 @@ odTable = ndf_data_util.getOpticalDensity(dataLocation)
 % 
 LED_CURRENT = 100;
 SPOT_DIAMETER_IN_MICRO_METER = 500; % in micro meter
-POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT = 0.288; % mw
+POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT = 0.3137; % mw
 
 %% NDF optical density 
 %
