@@ -18,7 +18,7 @@ odTable = ndf_data_util.getOpticalDensity(dataLocation)
 % 
 LED_CURRENT = 100;
 SPOT_DIAMETER_IN_MICRO_METER = 500; % in micro meter
-POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT = 0.3137; % mw
+POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT = 0.325; % mw
 
 %% NDF optical density 
 %
