@@ -1,6 +1,6 @@
 %% Script to visualize the projector spectrum
 % Replace this with actual folder name present in the same directory as readme
-FOLDER_NAME = '2019-05-06';
+FOLDER_NAME = '2022-08-24';
 
 % Load spectrum file measured from ocean optics spectrometer
 
@@ -13,11 +13,11 @@ a = axes();
 graph(a);
 title(a, 'power spectrum led current 25 and spot size 500 um');
 
-figure;
-[~, graph] = spectrum.getPowerSpectrum(100, 500, 'um');
-a = axes();
-graph(a);
-title(a, 'power spectrum led current 100 and spot size 500 um');
+%figure;
+%[~, graph] = spectrum.getPowerSpectrum(100, 500, 'um');
+%a = axes();
+%graph(a);
+%title(a, 'power spectrum led current 100 and spot size 500 um');
 
 
 figure;
