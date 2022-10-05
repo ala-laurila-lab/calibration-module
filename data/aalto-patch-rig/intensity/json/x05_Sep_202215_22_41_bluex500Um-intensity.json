@@ -4,8 +4,8 @@
 	"spotSize": "500 um",
 	"ledCurrent": "100",
 	"calibratedBy": "NM",
-	"calibrationDate": "05-Oct-2022 17:33:20",
-	"power": 0.309,
+	"calibrationDate": "05-Sep-2022 15:22:41",
+	"power": 0.318,
 	"powerExponent": 0.001,
 	"unit": "watt"
 }
