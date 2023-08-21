@@ -1,6 +1,6 @@
 %% Script to visualize the projector spectrum
 % Replace this with actual folder name present in the same directory as readme
-FOLDER_NAME = '2022-08-24';
+FOLDER_NAME = '2023-07-17';
 
 % Load spectrum file measured from ocean optics spectrometer
 
