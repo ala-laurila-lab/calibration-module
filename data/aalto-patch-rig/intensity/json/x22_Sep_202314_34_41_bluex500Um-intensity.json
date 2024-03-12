@@ -3,9 +3,9 @@
 	"ledType": "blue",
 	"spotSize": "500 um",
 	"ledCurrent": "100",
-	"calibratedBy": "NM",
-	"calibrationDate": "27-Feb-2024 10:14:46",
-	"power": 0.302,
-	"powerExponent": 0.001,
+	"calibratedBy": "NM ZJ",
+	"calibrationDate": "22-Sep-2023 14:34:41",
+	"power": 0.287,
+	"powerExponent": 1e-06,
 	"unit": "watt"
 }
