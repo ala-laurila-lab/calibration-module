@@ -5,9 +5,9 @@ import ala_laurila_lab.*;
 
 %% Data 
 
-SPECTRUM_DATA_FOLDER = '2023-09-06';
-LED_NON_LINEARITY_FILE_NAME = 'x06_Sep_202313_29_37-non-linearity.json'; % BPFilter for DLP projector installed
-%LED_NON_LINEARITY_FILE_NAME = 'x21_Aug_202315_58_28-non-linearity.json';
+SPECTRUM_DATA_FOLDER = '2024-11-22';
+LED_NON_LINEARITY_FILE_NAME = 'x22_Nov_202412_11_55-non-linearity.json'; % BPFilter for DLP projector installed
+%LED_NON_LINEARITY_FILE_NAME = 'x22_Nov_202412_11_55-non-linearity.json';
 
 
 dataLocation = fileparts(which('aalto_rig_calibration_data_readme'));
@@ -19,14 +19,15 @@ odTable = ndf_data_util.getOpticalDensity(dataLocation)
 % 
 LED_CURRENT = 100;
 SPOT_DIAMETER_IN_MICRO_METER = 500; % in micro meter
-POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT = 0.293; % mw
+POWER_MEASURED_IN_OPTOMETER_FOR_LED_CURRENT_IN_MILLIWATT = 0.290; % mw
 
 %% NDF optical density 
 %
 % Ndf specif inputs (If changed)
 % Plug in OD values for all NDFs here
-NDF_IN_FILTER_WHEEL_1_ORDER = [0.93, 2.03, 3.32, 4.13, 0, 0];
-NDF_IN_FILTER_WHEEL_2_ORDER = [0, 0, 3.3, 4.46, 0, 0];
+NDF_IN_FILTER_WHEEL_1_ORDER = [0.93, 2.04, 3.29, 4.16, 0, 0];
+NDF_IN_FILTER_WHEEL_2_ORDER = [0, 0, 3.29, 4.46, 0, 0];
+
 
 %% Rstar table computation
 
