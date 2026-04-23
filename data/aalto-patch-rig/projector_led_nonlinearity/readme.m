@@ -1,7 +1,7 @@
 %% Script to visualize the non linearity json
 
 % Replace this with actual file name present in the same directory as readme
-NON_LINEARITY_FILE_NAME = 'x08_Jun_202115_45_56-non-linearity.json';
+NON_LINEARITY_FILE_NAME = 'x23_Apr_202613_12_53-non-linearity.json';
 
 %Load a json file to structure
 location = fileparts(mfilename('fullpath'));
